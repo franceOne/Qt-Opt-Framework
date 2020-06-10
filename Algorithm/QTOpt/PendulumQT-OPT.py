@@ -18,6 +18,7 @@ enviroment.render()
 print('Number of states: {}'.format(enviroment.observation_space))
 print('Number of actions: {}'.format(enviroment.action_space))
 
+print("State",  enviroment.reset())
 
 optimizer = tf.keras.optimizers.SGD(learning_rate=0.0001, momentum=0.9)
 

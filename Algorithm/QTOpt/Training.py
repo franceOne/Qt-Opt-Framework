@@ -6,12 +6,14 @@ import progressbar
 
 
 
-def train(enviroment, agent, policyFunction, batch_size=32, num_of_episodes=100, ):
+def train(enviroment, agent, policyFunction, observationsize = 4, batch_size=32, num_of_episodes=100, ):
     for e in range(0, num_of_episodes):
         # Reset the enviroment
+       
         state = enviroment.reset()
-        state = np.reshape(state, [1,4])
-              
+        state = np.reshape(state, [1,observationsize])
+
+      
         
         # Initialize variables
         rewardSum = 0
@@ -29,7 +31,7 @@ def train(enviroment, agent, policyFunction, batch_size=32, num_of_episodes=100,
             # Take action    
             next_state, reward, terminated, info = enviroment.step(action)
             print("action", action, "terminated", terminated, "reward", reward)
-            next_state = np.reshape(next_state, [1,4]) 
+            next_state = np.reshape(next_state, [1,observationsize]) 
             agent.store(state, action, reward, next_state, terminated, True)
             rewardSum += reward
            
@@ -42,7 +44,7 @@ def train(enviroment, agent, policyFunction, batch_size=32, num_of_episodes=100,
                 break
                 
             
-            bar.update(rewardSum if rewardSum < 200 else 200)
+            bar.update(abs(rewardSum) if abs(rewardSum) < 200 else 200)
         
         bar.finish()
         print("**********************************")

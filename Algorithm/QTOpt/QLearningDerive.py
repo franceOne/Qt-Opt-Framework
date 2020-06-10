@@ -10,60 +10,57 @@ import numpy as np
 import random
 from IPython.display import clear_output
 import math
-
-
+from CEM import CEM
 
 class Agent:
-    def __init__(self, enviroment, optimizer, loss):
+    def __init__(self, enviroment, optimizer, loss, state_size= 4, action_size= 1, cem_update_itr = 2, select_num = 6, num_samples = 64):
         
-        # Initialize atributes
-        self.state = {
-          "high": enviroment.observation_space.high,
-          "low": enviroment.observation_space.low,
-          "size": enviroment.observation_space.high.size
-        }
-        self._state_size = enviroment.observation_space.high.size
-        self._action_size = enviroment.action_space.n
-
+               
+        self._state_size = state_size
+        self._action_size = action_size
+        self._networkOutputSize = 1
+        
         self._optimizer = optimizer
         self._loss = loss
+
+
         # Initialize discount and exploration rate
         self.gamma = 0.9
         self.epsilon = 0.3
         self.train_step = 0
-        self.movingAverage = 0.9999
-        self.laggedq2 = 2
+        
 
-        self.numTagetNetworks = 5
-        self.q1Function = pass
-        self.q2function =  pass
-        self.actualNetworkList = [self._build_compile_model() for _ in range(self.numTagetNetworks)]
+        #TargetNetworks
+        self.numTagetNetworks = 3
+        self.targetNetworkList = [self._build_compile_model() for _ in range(self.numTagetNetworks)]
+      
         self.actualTargetNetwork = 0
-
-        self.movingAverageTensorList = [self._build_compile_model().get_weights() for _ in range(self.numTagetNetworks)]
-        self.actualMovingIndex = 0
+        self.target2Index = 2
         
-        
-        self.onPolicyReplayBufferMaxLength = 5000
-        self.onPolicyReplayBufferBatchSize = 32
-
-        self.offPolicyReplayBufferMaxLength = 5000
-        self.offPolicyReplayBufferBatchSize = 32
-        
+        self.replayBufferMaxLength = 5000
+        self.replyBufferBatchSize = 32
         # (s,a, S', r)
         data_spec = (tf.TensorSpec(self._state_size, tf.float64, 'state'),
-        tf.TensorSpec(1, tf.int32, 'action'),
+        tf.TensorSpec(self._action_size, tf.float32, 'action'),
         tf.TensorSpec(self._state_size, tf.float64, 'next_state'),
-        tf.TensorSpec(1, tf.float32, 'reward'),
+        tf.TensorSpec(1, tf.float64, 'reward'),
         tf.TensorSpec(1, tf.bool, 'terminated'))
         
-        self.onPolicyReplay = tf_uniform_replay_buffer.TFUniformReplayBuffer(data_spec, batch_size = 1, max_length=self.replayBufferMaxLength )
-        self.offPolicyReplay = tf_uniform_replay_buffer.TFUniformReplayBuffer(data_spec, batch_size = 1, max_length=self.replayBufferMaxLength )
+        self.replayBuffer = tf_uniform_replay_buffer.TFUniformReplayBuffer(data_spec, batch_size = 1, max_length=self.replayBufferMaxLength )
             
+        #Init CEM
+        self.cem_update_itr = cem_update_itr
+        self.cem_select_num = select_num
+        self.cem_num_samples = num_samples
+        self.cem  = CEM(self._action_size)
+
+
         # Build networks
         self.q_network = self._build_compile_model()
+        self.policy = self._build_compile_model()
         self.alighn_target_model()
-        self.loadOffPolicyData()
+
+  
 
     def store(self, state, action, reward, next_state, terminated, training):
         values = (state, action, next_state, reward, terminated)
@@ -72,12 +69,13 @@ class Agent:
 
         if(training and self.replayBuffer.num_frames() > self.replyBufferBatchSize):
           self.retrain(self.replyBufferBatchSize)
-      
-    def loadOffPolicyData():
-      pass  
 
+    def getStateActionArray(self, state, action):
+       return np.concatenate((action, state), axis=1) 
+      
     def _build_compile_model(self):
-        layerInput = keras.Input(shape=(self._state_size+ s self._action_size), name='q_input')
+        inputShape = self._state_size+self._action_size
+        layerInput = keras.Input(shape=(inputShape,), name='q_input')
         x = layers.BatchNormalization()(layerInput)
         x = layers.Dense(20, activation='relu', name="dense_1")(x)
         x = layers.BatchNormalization()(x)
@@ -85,7 +83,7 @@ class Agent:
         x = layers.BatchNormalization()(x)
         x = layers.Dense(20, activation='relu', name="dense_3")(x)
         x = layers.BatchNormalization()(x)
-        output = layers.Dense(self._action_size,  activation='linear', name="dense_output")(x)
+        output = layers.Dense(self._networkOutputSize,  activation='linear', name="dense_output")(x)
         model = keras.Model(inputs=layerInput, outputs = output)
         model.compile(loss=self._loss, optimizer=self._optimizer)
         return model
@@ -97,105 +95,109 @@ class Agent:
         self.targetNetworkList[self.actualTargetNetwork] = targetnetwork
         self.actualTargetNetwork = (self.actualTargetNetwork+1)%self.numTagetNetworks
 
-    
-    def saveExpMovAver(self, actualNetwork, previousNetwork):
-      actuaNetworkWeights = actualNetwork.get_weights()
-      previousnetworkWeights = previousNetwork.get_weights()
 
-      movAverageWeights = tf.math.scalar_mul(self.movingAverage, previousnetworkWeights)+ tf.math.scalar_mul(1-self.movingAverage, actuaNetworkWeights)+
-      self.actualMovingIndex = (self.actualMovingIndex+1) % len(self.movingAverageTensorList)
-      self.movingAverageTensorList[self.actualMovingIndex]  =  movAverageWeights
-
-
+    def get_valueFunction(self, next_state_action_array):
+      target1 = self.getTarget1Network().predict(next_state_action_array)
+      target2 = self.getTarget2Network().predict(next_state_action_array)
+      return np.minimum(target1, target2)
 
     
-    def getValueFunction(state):
-      q1NetworkWeights = self.movingAverageTensorList[self.actualMovingIndex]
-      q2NetworkWeights = self.movingAverageTensorList[(self.actualMovingIndex- self.laggedq2)% len(self.movingAverageTensorList) ] 
-      
-      q1Network = self._build_compile_model()
-      q1Network.set_weights(q1NetworkWeights)
-
-      q2Network =  self._build_compile_model()
-      q2Network.set_weights(q2NetworkWeights)
-      
-      min(self.getTargetOneNetwork().predict(state, ))
-
-      v1 = q1Network.preq2dict(state)
-      v1Action = np.argmax(v1, axis=1)
-
-      q1 = q1Network.predict(state)
-      q2 = q2Network.predict(state)
-
-      q1Values = np
-
-      
-
-      
-
+    def getActionPolicy(self,actions):
+      def myfunc(a):
+          return int(a>0.5)
+      vfunc = np.vectorize(myfunc)
+      return vfunc(actions)
     
-    def getTargetOneNetwork():
-      return self.q_network
 
-    def getTargetTwoNetwork():
-      return self.q_network
-    
-    def getActualNetwork(self):
-      return self.q_network
+    def _get_cem_optimal_Action(self,state):
+      states = np.tile(state, (self.cem_num_samples,1))
+      self.cem.reset()
+      for i in range(self.cem_update_itr):
+        actions = self.cem.sample_multi(self.cem_num_samples)
+        actions = self.getActionPolicy(actions)
+        q_values = self.getTarget1Network().predict_on_batch(self.getStateActionArray(states, actions))
+        reshaped_q_values = np.reshape(q_values, -1)
+        #Max Index
+        max_indx = np.argmax(reshaped_q_values)
+        # Max n Index
+        idx = np.argsort(reshaped_q_values)[-self.cem_select_num:]
+        selected_actions = actions[idx]
+        self.cem.update(selected_actions)
+            
+      optimal_action = actions[max_indx]
+      return optimal_action
+
+
 
     def getActionFromEpsilonGreedyPolicy(self, enviroment):
        action = enviroment.action_space.sample()
-       print("EpsilonGreedyAction:", action)
+       #print("EpsilonGreedyAction:", action)
        return action
 
 
-    def getTargetNetwork(self):
+    def getTarget1Network(self):
       return self.targetNetworkList[self.actualTargetNetwork]
+
+    def getTarget2Network(self):
+      return self.targetNetworkList[(self.actualTargetNetwork-self.target2Index)%len(self.targetNetworkList)]
           
     def get_Action(self, enviroment, state, training):
-        if training and np.random.rand() <= self.epsilon:
-            return self.getActionFromEpsilonGreedyPolicy(enviroment)
+        if training and (np.random.rand() <= self.epsilon or self.train_step<100):
+            action = self.getActionFromEpsilonGreedyPolicy(enviroment)
+            print("Epsilon", action)
+            return action
       
-        q_values = self.getActualNetwork().predict(state)
-        argmax = q_values[0].argmax()
-        print("action", argmax)
-        #print("input", state)
-        #print("Action", argmax, "from", q_values )
-        return argmax
-
+        optimal_action = self._get_cem_optimal_Action(state)
+        print("CEM", optimal_action)
+        return optimal_action[0]
+        
     def train(self ,states, actions, next_states, rewards, terminates, batch_size):
-      #print("train")
       loss = 0
       self.train_step += 1
 
       npTerminates = np.asarray(terminates)
       npRewards = np.asarray(rewards)
       npActions = np.asarray(actions)
+      npStates = np.asarray(states)
       intTerminates = np.array(list(map(lambda y: [1- int(y)], npTerminates)))
-      
+    
        
-      q_values = self.q_network.predict(states)
-      q_next = self.q_network.predict(next_states)     
+      state_action_array  =  self.getStateActionArray(npStates, npActions)
+      q_values = self.q_network.predict(state_action_array)
+
+      #Sample Next_Actions FROM CEM
+      next_actions_samples = []
+      for i  in range(batch_size):
+        next_actions_samples.append(self._get_cem_optimal_Action(next_states[i]))
+
+      next_actions = np.asarray(next_actions_samples)
+      #print(next_actions)
+      #print(next_states)
+      next_state_action_array  =  self.getStateActionArray(next_states, next_actions)
+    
+      q_next = self.get_valueFunction(next_state_action_array)
 
       q_target = np.copy(q_values)
 
+      #print(q_target)
       for i in range(batch_size):
         myTarget = npRewards[i] + self.gamma * np.amax(q_next[i])*intTerminates[i]
         if i == 0:
           pass
-          print("my Target", myTarget) 
+          #print("my Target", myTarget) 
+        q_target[i] =  npRewards[i] + self.gamma * np.amax(q_next[i])*intTerminates[i]
         
-        q_target[i][npActions[i]] =  npRewards[i] + self.gamma * np.amax(q_next[i])*intTerminates[i]
 
       #print("Choosed Action", npActions[0])
 
-      print("Values", q_values[0])
+      #print("Values", q_values[0])
       if math.isnan(q_target[0][0]):
+        print(q_target)
         input("stop")
 
       #print("Next", q_next[0])
 
-      print("Target Q", q_target[0])
+      #print("Target Q", q_target[0])
 
       #print("Rward", npRewards[0])
 
@@ -206,7 +208,7 @@ class Agent:
       #print("Full Target Q", q_target)
       #input("wait")
 
-      training_history = self.q_network.train_on_batch(states, q_target)
+      training_history = self.q_network.train_on_batch(state_action_array, q_target)
 
       if self.train_step % 100 == 0:
         print("update parameter")
@@ -225,7 +227,7 @@ class Agent:
         terminates = minibatch[4]
            
         states = tf.reshape(states, (batch_size, self._state_size))
-        actions = tf.reshape(actions, (batch_size,1))
+        actions = tf.reshape(actions, (batch_size,self._action_size))
         next_states = tf.reshape(next_states, (batch_size, self._state_size))
         rewards = tf.reshape(rewards, (batch_size, 1))
         terminates = tf.reshape(terminates, (batch_size,1))
