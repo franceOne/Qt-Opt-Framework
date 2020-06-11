@@ -20,6 +20,7 @@ class Agent:
         self._action_size = action_size
         self._camerashape = camerashape
         self._networkOutputSize = 1
+        self._actionStateReshape = (1,1,64)
         
         
         
@@ -80,9 +81,9 @@ class Agent:
 
     def _buildCameraMoel(self):
       imgInput =   keras.Input(shape=(self._camerashape), name='img_input') 
-      x = layers.Conv2D(64, (6,2),activation="relu")(imgInput)
+      x = layers.Conv2D(64, (6,2),activation="relu", name="input_Conv")(imgInput)
       x = layers.BatchNormalization()(x)
-      output = layers.MaxPool2D((3,3))(x)
+      output = layers.MaxPool2D((3,3), name="output_camra")(x)
       return (imgInput,output)
 
     def _buildActionStateModel(self):
@@ -90,8 +91,9 @@ class Agent:
       actionStateInput = keras.Input(shape=(inputShape,), name='q_input')
       x = layers.BatchNormalization()(actionStateInput)
       x = layers.Dense(20, activation='relu')(x)
-      output = layers.Dense(self._networkOutputSize,  activation='linear', name="dense_output")(x)
-      return (actionStateInput,output)
+      x = layers.Dense(64,  activation='linear', name="dense_output")(x)
+      reshape = layers.Reshape(self._actionStateReshape, name="reshape")(x)
+      return (actionStateInput,reshape)
 
 
 
@@ -101,7 +103,8 @@ class Agent:
       inputActionState, outputActionState = self._buildActionStateModel()
       x = layers.add([outputImg, outputActionState])
       x = layers.Conv2D(64, (6,2),activation="relu")(x)
-      x = layers.MaxPool2D((2,2))(x)
+      x = layers.MaxPool2D((2))(x)
+      x = layers.Flatten()(x)
       output = layers.Dense(self._networkOutputSize, activation='sigmoid')(x)    
       model = keras.Model(inputs=[inputImg, inputActionState], outputs = output)
       model.compile(loss=self._loss, optimizer=self._optimizer)
@@ -144,9 +147,6 @@ class Agent:
      
         # Max n Index
         idx = np.argsort(reshaped_q_values)[-self.cem_select_num:]
-        print(idx)
-        print(q_values.shape)
-        input("wait")
         selected_actions = actions[idx]
         self.cem.update(selected_actions)
             
