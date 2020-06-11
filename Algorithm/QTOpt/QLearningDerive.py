@@ -14,13 +14,18 @@ from CEM import CEM
 
 class Agent:
     def __init__(self, enviroment, optimizer, loss,  action_space_policy, state_size= 4, action_size= 1, camerashape = (500,500,3),  cem_update_itr = 2, select_num = 6, num_samples = 64):
-        
-               
         self._state_size = state_size
         self._action_size = action_size
         self._camerashape = camerashape
+        _imgReshapeSize = 64
+        self._imgReshape = (_imgReshapeSize,_imgReshapeSize)
+        cameraShapeList = list(self._camerashape)
+        cameraShapeList[0] = _imgReshapeSize
+        cameraShapeList[1] = _imgReshapeSize
+        self._imgReshapeWithDepth =  cameraShape = tuple(cameraShapeList)
+        
         self._networkOutputSize = 1
-        self._actionStateReshape = (1,1,64)
+        self._actionStateReshape = (1,1,32)
       
         self._optimizer = optimizer
         self._loss = loss
@@ -30,17 +35,20 @@ class Agent:
         self.gamma = 0.9
         self.epsilon = 0.3
         self.train_step = 0
-        
+
+
+         # Build networks
+        self.q_network = self._build_compile_model()
 
         #TargetNetworks
         self.numTagetNetworks = 3
-        self.targetNetworkList = [self._build_compile_model() for _ in range(self.numTagetNetworks)]
+        self.targetNetworkList = [tf.keras.models.clone_model(self.q_network) for _ in range(self.numTagetNetworks)]
       
         self.actualTargetNetwork = 0
         self.target2Index = 2
-        
+    
         self.replayBufferMaxLength = 500
-        self.replyBufferBatchSize = 32
+        self.replyBufferBatchSize = 64
         # (s,a, S', r)
         data_spec = (tf.TensorSpec(self._state_size, tf.float64, 'state'),
         tf.TensorSpec(self._action_size, tf.float64, 'action'),
@@ -50,7 +58,7 @@ class Agent:
         tf.TensorSpec(1, tf.float64, 'reward'),
         tf.TensorSpec(1, tf.bool, 'terminated'))
         
-        self.replayBuffer = tf_uniform_replay_buffer.TFUniformReplayBuffer(data_spec, batch_size = 1, max_length=self.replayBufferMaxLength )
+        #self.replayBuffer = tf_uniform_replay_buffer.TFUniformReplayBuffer(data_spec, batch_size = 1, max_length=self.replayBufferMaxLength )
             
         #Init CEM
         self.cem_update_itr = cem_update_itr
@@ -60,9 +68,8 @@ class Agent:
         self.getActionPolicy = action_space_policy
 
 
-        # Build networks
-        self.q_network = self._build_compile_model()
-        self.policy = self._build_compile_model()
+       
+
         self.alighn_target_model()
 
   
@@ -71,25 +78,26 @@ class Agent:
         #(s,a,c, s', c', r t)
         values = (state, tf.dtypes.cast(action, tf.float64), camera, next_state, next_camera, reward, terminated)
         nestedStructure = tf.nest.map_structure(lambda t: tf.stack([t]* 1),values)
-        self.replayBuffer.add_batch(nestedStructure)
+        #self.replayBuffer.add_batch(nestedStructure)
 
-        if(training and self.replayBuffer.num_frames() > self.replyBufferBatchSize):
-          self.retrain(self.replyBufferBatchSize)
+        #if(training and self.replayBuffer.num_frames() > self.replyBufferBatchSize):
+          #self.retrain(self.replyBufferBatchSize)
+          #pass
 
     def getStateActionArray(self, state, action):
        return np.concatenate((action, state), axis=1) 
 
 
     def _buildCameraMoel(self):
-      imgInput =   keras.Input(shape=(self._camerashape), name='img_input') 
-      x = layers.Conv2D(64, (6,2),activation="relu", name="input_Conv")(imgInput)
-      output = layers.MaxPool2D((8,8), name="output_camra")(x)
+      imgInput =   keras.Input(shape=(self._imgReshapeWithDepth), name='img_input')
+      x = layers.Conv2D(32, (6,2),activation="relu", name="input_Conv")(imgInput)
+      output = layers.MaxPool2D((20,20), name="output_camra")(x)
       return (imgInput,output)
 
     def _buildActionStateModel(self):
       inputShape = self._state_size+self._action_size
       actionStateInput = keras.Input(shape=(inputShape,), name='q_input')
-      x = layers.Dense(64,  activation='relu', name="dense_output")(actionStateInput)
+      x = layers.Dense(32,  activation='relu', name="dense_output")(actionStateInput)
       reshape = layers.Reshape(self._actionStateReshape, name="reshape")(x)
       return (actionStateInput,reshape)
 
@@ -100,7 +108,7 @@ class Agent:
       inputImg, outputImg = self._buildCameraMoel()
       inputActionState, outputActionState = self._buildActionStateModel()
       x = layers.add([outputImg, outputActionState])
-      x = layers.Dense(3,  activation='relu')(x)
+      x = layers.Dense(1,  activation='relu')(x)
       x = layers.Flatten()(x)
       output = layers.Dense(self._networkOutputSize, activation='sigmoid')(x)    
       model = keras.Model(inputs=[inputImg, inputActionState], outputs = output)
@@ -117,8 +125,8 @@ class Agent:
 
 
     def get_valueFunction(self, next_state_action_array, next_camera):
-      target1 = self.getTarget1Network().predict(next_state_action_array)
-      target2 = self.getTarget2Network().predict(next_state_action_array)
+      target1 = self.getTarget1Network().predict([next_camera, next_state_action_array])
+      target2 = self.getTarget2Network().predict([next_camera,next_state_action_array])
       return np.minimum(target1, target2)
 
     
@@ -157,6 +165,8 @@ class Agent:
        #print("EpsilonGreedyAction:", action)
        return action
 
+    def getReshapedImg(self, img):
+      return tf.image.resize(img, list(self._imgReshape))
 
     def getTarget1Network(self):
       return self.targetNetworkList[self.actualTargetNetwork]
@@ -170,7 +180,7 @@ class Agent:
             #print("Epsilon", action)
             return action
       
-        optimal_action = self._get_cem_optimal_Action(state, camera)
+        optimal_action = self._get_cem_optimal_Action(state, self.getReshapedImg(camera))
         #print("CEM", optimal_action)
         return optimal_action
         
