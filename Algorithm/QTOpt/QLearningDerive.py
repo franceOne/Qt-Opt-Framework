@@ -13,12 +13,16 @@ import math
 from CEM import CEM
 
 class Agent:
-    def __init__(self, enviroment, optimizer, loss,  action_space_policy, state_size= 4, action_size= 1,  cem_update_itr = 2, select_num = 6, num_samples = 64):
+    def __init__(self, enviroment, optimizer, loss,  action_space_policy, state_size= 4, action_size= 1, camerashape = (500,500,3),  cem_update_itr = 2, select_num = 6, num_samples = 64):
         
                
         self._state_size = state_size
         self._action_size = action_size
+        self._camerashape = camerashape
         self._networkOutputSize = 1
+        self._actionStateReshape = (1,1,64)
+        
+        
         
         self._optimizer = optimizer
         self._loss = loss
@@ -73,21 +77,39 @@ class Agent:
 
     def getStateActionArray(self, state, action):
        return np.concatenate((action, state), axis=1) 
+
+
+    def _buildCameraMoel(self):
+      imgInput =   keras.Input(shape=(self._camerashape), name='img_input') 
+      x = layers.Conv2D(64, (6,2),activation="relu", name="input_Conv")(imgInput)
+      x = layers.BatchNormalization()(x)
+      output = layers.MaxPool2D((3,3), name="output_camra")(x)
+      return (imgInput,output)
+
+    def _buildActionStateModel(self):
+      inputShape = self._state_size+self._action_size
+      actionStateInput = keras.Input(shape=(inputShape,), name='q_input')
+      x = layers.BatchNormalization()(actionStateInput)
+      x = layers.Dense(20, activation='relu')(x)
+      x = layers.Dense(64,  activation='linear', name="dense_output")(x)
+      reshape = layers.Reshape(self._actionStateReshape, name="reshape")(x)
+      return (actionStateInput,reshape)
+
+
+
       
     def _build_compile_model(self):
-        inputShape = self._state_size+self._action_size
-        layerInput = keras.Input(shape=(inputShape,), name='q_input')
-        x = layers.BatchNormalization(name="bacth_0")(layerInput)
-        x = layers.Dense(20, activation='relu', name="dense_1")(x)
-        x = layers.BatchNormalization(name="bacth_1")(x)
-        x = layers.Dense(20, activation='relu', name="dense_2")(x)
-        x = layers.BatchNormalization(name="bacth_2")(x)
-        x = layers.Dense(20, activation='relu', name="dense_3")(x)
-        x = layers.BatchNormalization(name="bacth_3")(x)
-        output = layers.Dense(self._networkOutputSize,  activation='linear', name="dense_output")(x)
-        model = keras.Model(inputs=layerInput, outputs = output)
-        model.compile(loss=self._loss, optimizer=self._optimizer)
-        return model
+      inputImg, outputImg = self._buildCameraMoel()
+      inputActionState, outputActionState = self._buildActionStateModel()
+      x = layers.add([outputImg, outputActionState])
+      x = layers.Conv2D(64, (6,2),activation="relu")(x)
+      x = layers.MaxPool2D((2))(x)
+      x = layers.Flatten()(x)
+      output = layers.Dense(self._networkOutputSize, activation='sigmoid')(x)    
+      model = keras.Model(inputs=[inputImg, inputActionState], outputs = output)
+      model.compile(loss=self._loss, optimizer=self._optimizer)
+      return model
+        
 
     def alighn_target_model(self):
         targetnetwork = self.targetNetworkList[self.actualTargetNetwork]
@@ -104,9 +126,12 @@ class Agent:
 
     
 
-    def _get_cem_optimal_Action(self,state):
+    def _get_cem_optimal_Action(self,state, camera):
       #print("CEM state", state)
+ 
       states = np.tile(state, (self.cem_num_samples,1))
+      cameras = np.tile(camera, (self.cem_num_samples,1,1,1))
+  
       #print("CEM STATES", states, states.shape)
       self.cem.reset()
       for i in range(self.cem_update_itr):
@@ -115,10 +140,11 @@ class Agent:
         #print("CEM ActiONS", actions, actions.shape)
         stateActionArray = self.getStateActionArray(states, actions)
         #print("CEM STATe Action Array", stateActionArray, stateActionArray.shape)
-        q_values = self.getTarget1Network().predict_on_batch(stateActionArray)
+        q_values = self.getTarget1Network().predict_on_batch([cameras, stateActionArray])
         reshaped_q_values = np.reshape(q_values, -1)
         #Max Index
         max_indx = np.argmax(reshaped_q_values)
+     
         # Max n Index
         idx = np.argsort(reshaped_q_values)[-self.cem_select_num:]
         selected_actions = actions[idx]
@@ -141,13 +167,13 @@ class Agent:
     def getTarget2Network(self):
       return self.targetNetworkList[(self.actualTargetNetwork-self.target2Index)%len(self.targetNetworkList)]
           
-    def get_Action(self, enviroment, state, training):
+    def get_Action(self, enviroment, state, camera, training):
         if training and (np.random.rand() <= self.epsilon and self.train_step<100):
             action = self.getActionFromEpsilonGreedyPolicy(enviroment)
             #print("Epsilon", action)
             return action
       
-        optimal_action = self._get_cem_optimal_Action(state)
+        optimal_action = self._get_cem_optimal_Action(state, camera)
         #print("CEM", optimal_action)
         return optimal_action
         
