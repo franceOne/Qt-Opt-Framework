@@ -103,12 +103,6 @@ class Agent:
       return np.minimum(target1, target2)
 
     
-    def getActionPolicy(self,actions):
-      def myfunc(a):
-          return int(a>0.5)
-      vfunc = np.vectorize(myfunc)
-      return vfunc(actions)
-    
 
     def _get_cem_optimal_Action(self,state):
       #print("CEM state", state)

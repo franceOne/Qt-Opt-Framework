@@ -51,7 +51,6 @@ def train(enviroment, agent, policyFunction, observationsize = 4, batch_size=32,
                     break
                 else:
                     agent.alighn_target_model()
-                   
                     break
                 
             

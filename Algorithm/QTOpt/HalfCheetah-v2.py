@@ -15,8 +15,8 @@ from tensorflow.keras.optimizers import Adam
 enviroment = gym.make("Pendulum-v0").env
 #enviroment.render()
 
-print('Number of states: {} Height: {} Low {}'.format(enviroment.observation_space, enviroment.observation_space.high , enviroment.observation_space.low))
-print('Number of actions: {} Height: {} Low {}'.format(enviroment.action_space, enviroment.action_space.high, enviroment.action_space.low  ))
+print('Number of states: {} High: {} Low {}'.format(enviroment.observation_space, enviroment.observation_space.high , enviroment.observation_space.low))
+print('Number of actions: {} High: {} Low {}'.format(enviroment.action_space, enviroment.action_space.high, enviroment.action_space.low  ))
 
 print( "Action:", enviroment.action_space.sample())
 
