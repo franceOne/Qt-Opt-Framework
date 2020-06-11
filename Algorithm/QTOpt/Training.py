@@ -27,11 +27,13 @@ def train(enviroment, agent, policyFunction, observationsize = 4, batch_size=32,
         bar.start()
         
         while not terminated:
+            camera = enviroment.render(mode="rgb_array")
+            print("Camera", camera.shape[0])
             if not train:
                 enviroment.render()
             step += 1
             # Run Action
-            action = agent.get_Action(enviroment,state, train)
+            action = agent.get_Action(enviroment,state, camera,  train)
             action = policyFunction(action)
 
             
