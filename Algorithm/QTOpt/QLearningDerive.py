@@ -21,9 +21,7 @@ class Agent:
         self._camerashape = camerashape
         self._networkOutputSize = 1
         self._actionStateReshape = (1,1,64)
-        
-        
-        
+      
         self._optimizer = optimizer
         self._loss = loss
 
@@ -41,12 +39,14 @@ class Agent:
         self.actualTargetNetwork = 0
         self.target2Index = 2
         
-        self.replayBufferMaxLength = 5000
+        self.replayBufferMaxLength = 500
         self.replyBufferBatchSize = 32
         # (s,a, S', r)
         data_spec = (tf.TensorSpec(self._state_size, tf.float64, 'state'),
         tf.TensorSpec(self._action_size, tf.float64, 'action'),
+        tf.TensorSpec(self._camerashape, tf.int32, 'camera'),
         tf.TensorSpec(self._state_size, tf.float64, 'next_state'),
+        tf.TensorSpec(self._camerashape, tf.int32, 'next_camera'),
         tf.TensorSpec(1, tf.float64, 'reward'),
         tf.TensorSpec(1, tf.bool, 'terminated'))
         
@@ -67,8 +67,9 @@ class Agent:
 
   
 
-    def store(self, state, action, reward, next_state, terminated, training):
-        values = (state, tf.dtypes.cast(action, tf.float64), next_state, reward, terminated)
+    def store(self, state, action, camera, reward, next_state, next_camera, terminated, training):
+        #(s,a,c, s', c', r t)
+        values = (state, tf.dtypes.cast(action, tf.float64), camera, next_state, next_camera, reward, terminated)
         nestedStructure = tf.nest.map_structure(lambda t: tf.stack([t]* 1),values)
         self.replayBuffer.add_batch(nestedStructure)
 
@@ -82,16 +83,13 @@ class Agent:
     def _buildCameraMoel(self):
       imgInput =   keras.Input(shape=(self._camerashape), name='img_input') 
       x = layers.Conv2D(64, (6,2),activation="relu", name="input_Conv")(imgInput)
-      x = layers.BatchNormalization()(x)
-      output = layers.MaxPool2D((3,3), name="output_camra")(x)
+      output = layers.MaxPool2D((8,8), name="output_camra")(x)
       return (imgInput,output)
 
     def _buildActionStateModel(self):
       inputShape = self._state_size+self._action_size
       actionStateInput = keras.Input(shape=(inputShape,), name='q_input')
-      x = layers.BatchNormalization()(actionStateInput)
-      x = layers.Dense(20, activation='relu')(x)
-      x = layers.Dense(64,  activation='linear', name="dense_output")(x)
+      x = layers.Dense(64,  activation='relu', name="dense_output")(actionStateInput)
       reshape = layers.Reshape(self._actionStateReshape, name="reshape")(x)
       return (actionStateInput,reshape)
 
@@ -102,8 +100,7 @@ class Agent:
       inputImg, outputImg = self._buildCameraMoel()
       inputActionState, outputActionState = self._buildActionStateModel()
       x = layers.add([outputImg, outputActionState])
-      x = layers.Conv2D(64, (6,2),activation="relu")(x)
-      x = layers.MaxPool2D((2))(x)
+      x = layers.Dense(3,  activation='relu')(x)
       x = layers.Flatten()(x)
       output = layers.Dense(self._networkOutputSize, activation='sigmoid')(x)    
       model = keras.Model(inputs=[inputImg, inputActionState], outputs = output)
@@ -119,7 +116,7 @@ class Agent:
         self.actualTargetNetwork = (self.actualTargetNetwork+1)%self.numTagetNetworks
 
 
-    def get_valueFunction(self, next_state_action_array):
+    def get_valueFunction(self, next_state_action_array, next_camera):
       target1 = self.getTarget1Network().predict(next_state_action_array)
       target2 = self.getTarget2Network().predict(next_state_action_array)
       return np.minimum(target1, target2)
@@ -177,7 +174,7 @@ class Agent:
         #print("CEM", optimal_action)
         return optimal_action
         
-    def train(self ,states, actions, next_states, rewards, terminates, batch_size):
+    def train(self ,states, actions, cameras, next_states, next_cameras, rewards, terminates, batch_size):
       loss = 0
       self.train_step += 1
 
@@ -185,23 +182,25 @@ class Agent:
       npRewards = np.asarray(rewards)
       npActions = np.asarray(actions)
       npStates = np.asarray(states)
+      npCameras = np.asarray(cameras)
+      npNext_Cameras = np.asarray(next_cameras)
       intTerminates = np.array(list(map(lambda y: [1- int(y)], npTerminates)))
     
        
       state_action_array  =  self.getStateActionArray(npStates, npActions)
-      q_values = self.q_network.predict(state_action_array)
+      q_values = self.q_network.predict([npCameras,state_action_array])
 
       #Sample Next_Actions FROM CEM
       next_actions_samples = []
       for i  in range(batch_size):
-        next_actions_samples.append(self._get_cem_optimal_Action(next_states[i]))
+        next_actions_samples.append(self._get_cem_optimal_Action(next_states[i], npNext_Cameras[i]))
 
       next_actions = np.asarray(next_actions_samples)
       #print(next_actions)
       #print(next_states)
       next_state_action_array  =  self.getStateActionArray(next_states, next_actions)
     
-      q_next = self.get_valueFunction(next_state_action_array)
+      q_next = self.get_valueFunction(next_state_action_array, npNext_Cameras)
 
       q_target = np.copy(q_values)
 
@@ -244,7 +243,7 @@ class Agent:
       #print("Full Target Q", q_target)
       #input("wait")
 
-      training_history = self.q_network.train_on_batch(state_action_array, q_target)
+      training_history = self.q_network.train_on_batch([npCameras,state_action_array], q_target)
 
       if self.train_step % 100 == 0:
         #print("update parameter")
@@ -258,14 +257,23 @@ class Agent:
        
         states = minibatch[0]
         actions = minibatch[1]
-        next_states = minibatch[2]
-        rewards = minibatch[3]
-        terminates = minibatch[4]
+        cameras = minibatch[2]
+        next_states = minibatch[3]
+        next_cameras = minibatch[4]
+        rewards = minibatch[5]
+        terminates = minibatch[6]
+
+        cameraShapeList = list(self._camerashape)
+        cameraShapeList.insert(0, batch_size)
+        cameraShape = tuple(cameraShapeList)
            
         states = tf.reshape(states, (batch_size, self._state_size))
         actions = tf.reshape(actions, (batch_size,self._action_size))
+        cameras = tf.reshape(cameras, cameraShape)
         next_states = tf.reshape(next_states, (batch_size, self._state_size))
+        next_cameras = tf.reshape(next_cameras, cameraShape)
         rewards = tf.reshape(rewards, (batch_size, 1))
         terminates = tf.reshape(terminates, (batch_size,1))
 
-        self.train(states, actions, next_states, rewards, terminates, batch_size)
+
+        self.train(states, actions, cameras, next_states, next_cameras, rewards, terminates, batch_size)

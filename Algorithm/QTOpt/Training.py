@@ -28,7 +28,7 @@ def train(enviroment, agent, policyFunction, observationsize = 4, batch_size=32,
         
         while not terminated:
             camera = enviroment.render(mode="rgb_array")
-            print("Camera", camera.shape[0])
+            
             if not train:
                 enviroment.render()
             step += 1
@@ -41,11 +41,14 @@ def train(enviroment, agent, policyFunction, observationsize = 4, batch_size=32,
             
             # Take action    
             next_state, reward, terminated, info = enviroment.step(action)
+            next_camera  =  enviroment.render(mode="rgb_array")
+            #print("is camera eq", np.array_equal(camera, next_camera))
             #print("action", action, "terminated", terminated, "reward", reward)
             #next_state = np.reshape(next_state, [1,observationsize]) 
-            agent.store(state, action, reward, next_state, terminated, train)
+            agent.store(state, action, camera, reward, next_state, next_camera, terminated, train)
             rewardSum += reward
             state = next_state
+            camera = next_camera
             
             if terminated or step>=maxStepSize:
                 print("Episode {} Reward {}".format(e, rewardSum))
