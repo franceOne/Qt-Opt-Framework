@@ -12,7 +12,7 @@ from tensorflow.keras.layers import Dense, Embedding, Reshape
 from tensorflow.keras.optimizers import Adam
 
 
-enviroment = gym.make("HalfCheetah-v2").env
+enviroment = gym.make("Pendulum-v0").env
 #enviroment.render()
 
 print('Number of states: {} Height: {} Low {}'.format(enviroment.observation_space, enviroment.observation_space.high , enviroment.observation_space.low))
@@ -22,20 +22,24 @@ print( "Action:", enviroment.action_space.sample())
 
 print("State",  enviroment.reset())
 
-optimizer = tf.keras.optimizers.SGD(learning_rate=0.0001, momentum=0.9)
-
-loss =  "mse"
-agent = Agent(enviroment, optimizer, loss, state_size=6, action_size=6)
-
-batch_size = 128
-num_of_episodes = 500
-agent.q_network.summary()
-
 
 def policyFunction(action):
     return action
 
+optimizer = tf.keras.optimizers.SGD(learning_rate=0.0001, momentum=0.9)
+
+loss =  "mse"
+stateSize = 3
+actionSize = 1
+agent = Agent(enviroment, optimizer, loss, policyFunction, state_size=stateSize, action_size=actionSize)
+
+batch_size = 128
+num_of_episodes = 20
+agent.q_network.summary()
+
+
+
 print("Train")
-Training.train(enviroment, agent, policyFunction,  observationsize=17, batch_size=batch_size, num_of_episodes=num_of_episodes )
+Training.train(enviroment, agent, policyFunction,  observationsize=stateSize, batch_size=batch_size, num_of_episodes=num_of_episodes, train=True , maxStepSize=200)
 print("RUN")
-Training.runModel(enviroment, policyFunction, agent, 100 )
+Training.train(enviroment, agent, policyFunction, observationsize=stateSize, batch_size=batch_size, num_of_episodes=100, train=False, maxStepSize=1000  )

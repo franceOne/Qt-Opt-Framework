@@ -13,7 +13,7 @@ import math
 from CEM import CEM
 
 class Agent:
-    def __init__(self, enviroment, optimizer, loss, state_size= 4, action_size= 1, cem_update_itr = 2, select_num = 6, num_samples = 64):
+    def __init__(self, enviroment, optimizer, loss,  action_space_policy, state_size= 4, action_size= 1,  cem_update_itr = 2, select_num = 6, num_samples = 64):
         
                
         self._state_size = state_size
@@ -41,7 +41,7 @@ class Agent:
         self.replyBufferBatchSize = 32
         # (s,a, S', r)
         data_spec = (tf.TensorSpec(self._state_size, tf.float64, 'state'),
-        tf.TensorSpec(self._action_size, tf.float32, 'action'),
+        tf.TensorSpec(self._action_size, tf.float64, 'action'),
         tf.TensorSpec(self._state_size, tf.float64, 'next_state'),
         tf.TensorSpec(1, tf.float64, 'reward'),
         tf.TensorSpec(1, tf.bool, 'terminated'))
@@ -53,6 +53,7 @@ class Agent:
         self.cem_select_num = select_num
         self.cem_num_samples = num_samples
         self.cem  = CEM(self._action_size)
+        self.getActionPolicy = action_space_policy
 
 
         # Build networks
@@ -63,7 +64,7 @@ class Agent:
   
 
     def store(self, state, action, reward, next_state, terminated, training):
-        values = (state, action, next_state, reward, terminated)
+        values = (state, tf.dtypes.cast(action, tf.float64), next_state, reward, terminated)
         nestedStructure = tf.nest.map_structure(lambda t: tf.stack([t]* 1),values)
         self.replayBuffer.add_batch(nestedStructure)
 
@@ -76,13 +77,13 @@ class Agent:
     def _build_compile_model(self):
         inputShape = self._state_size+self._action_size
         layerInput = keras.Input(shape=(inputShape,), name='q_input')
-        x = layers.BatchNormalization()(layerInput)
+        x = layers.BatchNormalization(name="bacth_0")(layerInput)
         x = layers.Dense(20, activation='relu', name="dense_1")(x)
-        x = layers.BatchNormalization()(x)
+        x = layers.BatchNormalization(name="bacth_1")(x)
         x = layers.Dense(20, activation='relu', name="dense_2")(x)
-        x = layers.BatchNormalization()(x)
+        x = layers.BatchNormalization(name="bacth_2")(x)
         x = layers.Dense(20, activation='relu', name="dense_3")(x)
-        x = layers.BatchNormalization()(x)
+        x = layers.BatchNormalization(name="bacth_3")(x)
         output = layers.Dense(self._networkOutputSize,  activation='linear', name="dense_output")(x)
         model = keras.Model(inputs=layerInput, outputs = output)
         model.compile(loss=self._loss, optimizer=self._optimizer)
@@ -110,12 +111,17 @@ class Agent:
     
 
     def _get_cem_optimal_Action(self,state):
+      #print("CEM state", state)
       states = np.tile(state, (self.cem_num_samples,1))
+      #print("CEM STATES", states, states.shape)
       self.cem.reset()
       for i in range(self.cem_update_itr):
         actions = self.cem.sample_multi(self.cem_num_samples)
         actions = self.getActionPolicy(actions)
-        q_values = self.getTarget1Network().predict_on_batch(self.getStateActionArray(states, actions))
+        #print("CEM ActiONS", actions, actions.shape)
+        stateActionArray = self.getStateActionArray(states, actions)
+        #print("CEM STATe Action Array", stateActionArray, stateActionArray.shape)
+        q_values = self.getTarget1Network().predict_on_batch(stateActionArray)
         reshaped_q_values = np.reshape(q_values, -1)
         #Max Index
         max_indx = np.argmax(reshaped_q_values)
@@ -142,14 +148,14 @@ class Agent:
       return self.targetNetworkList[(self.actualTargetNetwork-self.target2Index)%len(self.targetNetworkList)]
           
     def get_Action(self, enviroment, state, training):
-        if training and (np.random.rand() <= self.epsilon or self.train_step<100):
+        if training and (np.random.rand() <= self.epsilon and self.train_step<100):
             action = self.getActionFromEpsilonGreedyPolicy(enviroment)
-            print("Epsilon", action)
+            #print("Epsilon", action)
             return action
       
         optimal_action = self._get_cem_optimal_Action(state)
-        print("CEM", optimal_action)
-        return optimal_action[0]
+        #print("CEM", optimal_action)
+        return optimal_action
         
     def train(self ,states, actions, next_states, rewards, terminates, batch_size):
       loss = 0
@@ -192,6 +198,16 @@ class Agent:
 
       #print("Values", q_values[0])
       if math.isnan(q_target[0][0]):
+        for i in range(batch_size):
+           print(npRewards[i] + self.gamma * np.amax(q_next[i])*intTerminates[i])
+           input("stop")
+           print("npRewards", npRewards)
+           input("stop1")
+           print("q_next", q_next)
+           print("intTerminates", intTerminates)
+           input("MH")
+           
+     
         print(q_target)
         input("stop")
 
@@ -211,7 +227,7 @@ class Agent:
       training_history = self.q_network.train_on_batch(state_action_array, q_target)
 
       if self.train_step % 100 == 0:
-        print("update parameter")
+        #print("update parameter")
         self.alighn_target_model()
      
 
