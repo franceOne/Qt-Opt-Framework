@@ -33,13 +33,13 @@ stateSize = 3
 actionSize = 1
 agent = Agent(enviroment, optimizer, loss, policyFunction,  state_size=stateSize, action_size=actionSize, camerashape=enviroment.render(mode="rgb_array").shape)
 
-batch_size = 128
-num_of_episodes = 25
+batch_size = 32
+num_of_episodes = 10
 agent.q_network.summary()
 
 
 
 print("Train")
-Training.train(enviroment, agent, policyFunction,  observationsize=stateSize, batch_size=batch_size, num_of_episodes=num_of_episodes, train=True , maxStepSize=100)
+Training.train(enviroment, agent, policyFunction,  observationsize=stateSize, num_of_episodes=num_of_episodes, train=True , maxStepSize=100)
 print("RUN")
-Training.train(enviroment, agent, policyFunction, observationsize=stateSize, batch_size=batch_size, num_of_episodes=100, train=False, maxStepSize=1000  )
+Training.train(enviroment, agent, policyFunction, observationsize=stateSize,  num_of_episodes=100, train=False, maxStepSize=1000  )

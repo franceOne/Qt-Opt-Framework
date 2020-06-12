@@ -6,7 +6,7 @@ import progressbar
 
 
 
-def train(enviroment, agent, policyFunction, observationsize = 4, batch_size=32, num_of_episodes=100, train=True, maxStepSize = 50 ):
+def train(enviroment, agent, policyFunction, observationsize = 4, num_of_episodes=100, train=True, maxStepSize = 50 ):
 
     if  not train:
         input("Run des modells")
@@ -62,4 +62,6 @@ def train(enviroment, agent, policyFunction, observationsize = 4, batch_size=32,
         print("**********************************")
         print("Episode: {}".format(e + 1))
         print("**********************************")
+    print("save model")
+    agent.saveModel()
 

@@ -54,8 +54,8 @@ class Agent:
         self.actualTargetNetwork = 0
         self.target2Index = 2
     
-        self.replayBufferMaxLength = 500
-        self.replyBufferBatchSize = 16
+        self.replayBufferMaxLength = 5000
+        self.replyBufferBatchSize = 32
         # (s,a, S', r)
         data_spec = (tf.TensorSpec(self._state_size, tf.float64, 'state'),
         tf.TensorSpec(self._action_size, tf.float64, 'action'),
@@ -95,20 +95,21 @@ class Agent:
       self.alighn_target_model()
 
     def saveModel(self):
-       self.q_network.save('saved_model/DQN')
+       self.q_network.save('simulation/src/RLAlgorithm/Algorithm/QTOpt/saved_model/DQN')
 
 
     def loadModel(self):
-      self.q_network = tf.keras.models.load_model('saved_model/DQN')  
+      self.q_network = tf.keras.models.load_model('simulation/src/RLAlgorithm/Algorithm/QTOpt/saved_model/DQN')  
       self.reset()
      
      
     def cross_entropy_loss(y_actual,y_pred):
       """
-       -Sum(actual log(pred)) = 
+       -Sum(target log(pred)) = 
       """
-      custom_loss=kb.square(y_actual-y_pred)
-      return custom_loss
+      cross_EntropySum =  y_actual * tf.keras.backend.log(y_pred)
+      custom_loss= - cross_EntropySum
+      return -custom_loss
 
 
     def updateLaggedNetworks(self):
@@ -140,18 +141,18 @@ class Agent:
       imgInput =   keras.Input(shape=(self._imgReshapeWithDepth), name='img_input')
       x = layers.Conv2D(32, (3,3),activation="relu", name="input_Conv")(imgInput)
       x = layers.BatchNormalization()(x)
-      x = layers.Conv2D(32, (3,3),activation="relu", name="input_Conv")(imgInput)
-      x = layers.BatchNormalization()(x)
-      output = layers.MaxPool2D((20,20), name="output_camra")(x)
+      output = layers.MaxPool2D((6,6), name="output_camra")(x)
       return (imgInput,output)
 
     def _buildActionStateModel(self):
       inputShape = self._state_size+self._action_size
       actionStateInput = keras.Input(shape=(inputShape,), name='q_input')
       x = layers.BatchNormalization()(actionStateInput)
-      x = layers.Dense(64,  activation='relu', name="dense_output")(actionStateInput)
+      x = layers.Dense(100,  activation='relu')(x)
       x = layers.BatchNormalization()(x)
-      x = layers.Dense(32,  activation='relu', name="dense_output")(actionStateInput)
+      x = layers.Dense(64,  activation='relu')(x)
+      x = layers.BatchNormalization()(x)
+      x = layers.Dense(32,  activation='relu', name="dense_output")(x)
       x = layers.BatchNormalization()(x)
       reshape = layers.Reshape(self._actionStateReshape, name="reshape")(x)
       return (actionStateInput,reshape)
@@ -164,6 +165,7 @@ class Agent:
       inputActionState, outputActionState = self._buildActionStateModel()
       x = layers.add([outputImg, outputActionState])
       x = layers.BatchNormalization()(x)
+      x = layers.Conv2D(16, (3,1),activation="relu")(x)
       x = layers.Dense(20,  activation='relu')(x)
       x = layers.BatchNormalization()(x)
       x = layers.Dense(10,  activation='relu')(x)
@@ -207,13 +209,19 @@ class Agent:
     def _get_cem_optimal_Action(self,state, camera):
       #print("CEM state", state)
  
+      #(32, BATCH ,4)
       states = np.tile(state, (self.cem_num_samples,1))
+      #(32, BATCH,64,64,64,3)
       cameras = np.tile(camera, (self.cem_num_samples,1,1,1))
+
+      print(states.shape)
   
       #print("CEM STATES", states, states.shape)
       self.cem.reset()
       for i in range(self.cem_update_itr):
+        #(32, BATCH,action)
         actions = self.cem.sample_multi(self.cem_num_samples)
+
         actions = self.getActionPolicy(actions)
         #print("CEM ActiONS", actions, actions.shape)
         stateActionArray = self.getStateActionArray(states, actions)
@@ -258,7 +266,6 @@ class Agent:
         return optimal_action
         
     def train(self ,states, actions, cameras, next_states, next_cameras, rewards, terminates, batch_size):
-      #print("in train")
       self.train_step += 1
 
       npTerminates = np.asarray(terminates)
@@ -272,12 +279,17 @@ class Agent:
        
       state_action_array  =  self.getStateActionArray(npStates, npActions)
       q_values = self.q_network.predict_on_batch([npCameras,state_action_array])
-
+      
+      #TODOO REFACtORING SMAPLES
       #Sample Next_Actions FROM CEM
+      print("sample")
+      #(BATCH, Actions)
       next_actions_samples = []
       for i  in range(batch_size):
+        #(,Action)
         next_actions_samples.append(self._get_cem_optimal_Action(next_states[i], npNext_Cameras[i]))
 
+      print("next")
       next_actions = np.asarray(next_actions_samples)
       #print(next_actions)
       #print(next_states)
@@ -286,7 +298,6 @@ class Agent:
       q_next = self.get_valueFunction(next_state_action_array, npNext_Cameras)
 
       q_target = np.copy(q_values)
-      #print("calc reward")
 
       #print(q_target)
       for i in range(batch_size):
