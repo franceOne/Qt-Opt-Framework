@@ -25,9 +25,10 @@ def train(enviroment, agent, policyFunction, observationsize = 4, batch_size=32,
        
         bar = progressbar.ProgressBar(maxval=maxStepSize, widgets=[progressbar.Bar('=', '[', ']'), ' ', progressbar.Percentage()])
         bar.start()
-        
+        camera = enviroment.render(mode="rgb_array")
         while not terminated:
-            camera = enviroment.render(mode="rgb_array")
+            #print("step")
+            
             
             if not train:
                 enviroment.render()

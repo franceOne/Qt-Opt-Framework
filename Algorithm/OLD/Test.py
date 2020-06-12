@@ -7,13 +7,13 @@ import numpy as np
 
 
 
-array = np.array([[0], [4]])
+array = np.array([[0,1], [4,2]])
 
-array2 = np.array([[2], [2]])
+array2 = np.array([[2,1], [2,2]])
 
 
 def myfunc(a):
     return int(a>0.5)
 vfunc = np.vectorize(myfunc)
 
-print(vfunc(array))
+print(0.99*array + 0.01*array2)
