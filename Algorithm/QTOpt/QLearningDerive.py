@@ -41,7 +41,6 @@ class Agent:
         #Iint ema
         self._emaFactor = 0.9999
 
-
          # Build networks
         self.q_network = self._build_compile_model()
         self.numLaggedNNetwork = 3
@@ -81,15 +80,33 @@ class Agent:
         self.alighn_target_model()
 
      
+    def reset(self):
+      data_spec = (tf.TensorSpec(self._state_size, tf.float64, 'state'),
+        tf.TensorSpec(self._action_size, tf.float64, 'action'),
+        tf.TensorSpec(self._imgReshapeWithDepth, tf.float32, 'camera'),
+        tf.TensorSpec(self._state_size, tf.float64, 'next_state'),
+        tf.TensorSpec(self._imgReshapeWithDepth, tf.float32, 'next_camera'),
+        tf.TensorSpec(1, tf.float64, 'reward'),
+        tf.TensorSpec(1, tf.bool, 'terminated'))
+        
+      self.replayBuffer = tf_uniform_replay_buffer.TFUniformReplayBuffer(data_spec, batch_size = 1, max_length=self.replayBufferMaxLength )
+      self._laggedTargetNetworkList = [tf.keras.models.clone_model(self.q_network) for _ in range(self.numLaggedNNetwork)]
+      self._laggedTargetNetworkList = [tf.keras.models.clone_model(self.q_network) for _ in range(self.numLaggedNNetwork)]
+      self.alighn_target_model()
+
+    def saveModel(self):
+       self.q_network.save('saved_model/DQN')
+
+
+    def loadModel(self):
+      self.q_network = tf.keras.models.load_model('saved_model/DQN')  
+      self.reset()
      
      
-      def custom_loss(y_actual,y_pred):
-        """
-         if y == 1:
-          return -log(yHat)
-        else:
-          return -log(1 - yHat)
-        """
+    def cross_entropy_loss(y_actual,y_pred):
+      """
+       -Sum(actual log(pred)) = 
+      """
       custom_loss=kb.square(y_actual-y_pred)
       return custom_loss
 
@@ -121,14 +138,21 @@ class Agent:
 
     def _buildCameraMoel(self):
       imgInput =   keras.Input(shape=(self._imgReshapeWithDepth), name='img_input')
-      x = layers.Conv2D(32, (6,2),activation="relu", name="input_Conv")(imgInput)
+      x = layers.Conv2D(32, (3,3),activation="relu", name="input_Conv")(imgInput)
+      x = layers.BatchNormalization()(x)
+      x = layers.Conv2D(32, (3,3),activation="relu", name="input_Conv")(imgInput)
+      x = layers.BatchNormalization()(x)
       output = layers.MaxPool2D((20,20), name="output_camra")(x)
       return (imgInput,output)
 
     def _buildActionStateModel(self):
       inputShape = self._state_size+self._action_size
       actionStateInput = keras.Input(shape=(inputShape,), name='q_input')
+      x = layers.BatchNormalization()(actionStateInput)
+      x = layers.Dense(64,  activation='relu', name="dense_output")(actionStateInput)
+      x = layers.BatchNormalization()(x)
       x = layers.Dense(32,  activation='relu', name="dense_output")(actionStateInput)
+      x = layers.BatchNormalization()(x)
       reshape = layers.Reshape(self._actionStateReshape, name="reshape")(x)
       return (actionStateInput,reshape)
 
@@ -139,7 +163,10 @@ class Agent:
       inputImg, outputImg = self._buildCameraMoel()
       inputActionState, outputActionState = self._buildActionStateModel()
       x = layers.add([outputImg, outputActionState])
-      x = layers.Dense(1,  activation='relu')(x)
+      x = layers.BatchNormalization()(x)
+      x = layers.Dense(20,  activation='relu')(x)
+      x = layers.BatchNormalization()(x)
+      x = layers.Dense(10,  activation='relu')(x)
       x = layers.Flatten()(x)
       output = layers.Dense(self._networkOutputSize, activation='sigmoid')(x)    
       model = keras.Model(inputs=[inputImg, inputActionState], outputs = output)
@@ -221,7 +248,7 @@ class Agent:
       return self.targetNetworkList[(self.actualTargetNetwork-self.target2Index)%len(self.targetNetworkList)]
           
     def get_Action(self, enviroment, state, camera, training):
-        if training and (np.random.rand() <= self.epsilon and self.train_step<100):
+        if training and (np.random.rand() <= self.epsilon or self.train_step<100):
             action = self.getActionFromEpsilonGreedyPolicy(enviroment)
             #print("Epsilon", action)
             return action
@@ -231,7 +258,7 @@ class Agent:
         return optimal_action
         
     def train(self ,states, actions, cameras, next_states, next_cameras, rewards, terminates, batch_size):
-      loss = 0
+      #print("in train")
       self.train_step += 1
 
       npTerminates = np.asarray(terminates)
@@ -259,6 +286,7 @@ class Agent:
       q_next = self.get_valueFunction(next_state_action_array, npNext_Cameras)
 
       q_target = np.copy(q_values)
+      #print("calc reward")
 
       #print(q_target)
       for i in range(batch_size):
@@ -298,17 +326,19 @@ class Agent:
       
       #print("Full Target Q", q_target)
       #input("wait")
-
+      
       self.updateLaggedNetworks()
       training_history = self.q_network.train_on_batch([npCameras,state_action_array], q_target)
+      #print("after train")
 
-      if self.train_step % 100 == 0:
+      if self.train_step % 10 == 0:
         #print("update parameter")
         self.alighn_target_model()
      
 
     def retrain(self, batch_size):
         dataset  = self.replayBuffer.as_dataset(sample_batch_size = batch_size, num_steps=1)
+        #print("before train")
         iterator = iter(dataset)
         (minibatch, prop) = next(iterator)
        

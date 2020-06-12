@@ -53,11 +53,7 @@ def train(enviroment, agent, policyFunction, observationsize = 4, batch_size=32,
             
             if terminated or step>=maxStepSize:
                 print("Episode {} Reward {}".format(e, rewardSum))
-                if not train:
-                    break
-                else:
-                    agent.alighn_target_model()
-                    break
+                break
                 
             
             bar.update(step)

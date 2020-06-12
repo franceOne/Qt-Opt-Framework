@@ -40,6 +40,6 @@ agent.q_network.summary()
 
 
 print("Train")
-Training.train(enviroment, agent, policyFunction,  observationsize=stateSize, batch_size=batch_size, num_of_episodes=num_of_episodes, train=True , maxStepSize=300)
+Training.train(enviroment, agent, policyFunction,  observationsize=stateSize, batch_size=batch_size, num_of_episodes=num_of_episodes, train=True , maxStepSize=100)
 print("RUN")
 Training.train(enviroment, agent, policyFunction, observationsize=stateSize, batch_size=batch_size, num_of_episodes=100, train=False, maxStepSize=1000  )
