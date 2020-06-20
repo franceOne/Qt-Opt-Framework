@@ -19,7 +19,7 @@ class Agent:
         self._state_size = state_size
         self._action_size = action_size
         self._camerashape = camerashape
-        _imgReshapeSize = 64
+        _imgReshapeSize = 16
         self._imgReshape = (_imgReshapeSize,_imgReshapeSize)
         cameraShapeList = list(self._camerashape)
         cameraShapeList[0] = _imgReshapeSize
@@ -27,7 +27,7 @@ class Agent:
         self._imgReshapeWithDepth =  cameraShape = tuple(cameraShapeList)
         
         self._networkOutputSize = 1
-        self._actionStateReshape = (1,1,32)
+        self._actionStateReshape = (None,32)
       
         self._optimizer = optimizer
         self._loss = loss
@@ -94,16 +94,16 @@ class Agent:
       self._laggedTargetNetworkList = [tf.keras.models.clone_model(self.q_network) for _ in range(self.numLaggedNNetwork)]
       self.alighn_target_model()
 
-    def saveModel(self):
-       self.q_network.save('simulation/src/RLAlgorithm/Algorithm/QTOpt/saved_model/DQN')
+    def saveModel(self, url):
+       self.q_network.save(url)
 
 
-    def loadModel(self):
-      self.q_network = tf.keras.models.load_model('simulation/src/RLAlgorithm/Algorithm/QTOpt/saved_model/DQN')  
+    def loadModel(self, url):
+      self.q_network = tf.keras.models.load_model(url)  
       self.reset()
      
      
-    def cross_entropy_loss(y_actual,y_pred):
+    def cross_entropy_loss(self,y_actual,y_pred):
       """
        -Sum(target log(pred)) = 
       """
@@ -139,23 +139,25 @@ class Agent:
 
     def _buildCameraMoel(self):
       imgInput =   keras.Input(shape=(self._imgReshapeWithDepth), name='img_input')
-      x = layers.Conv2D(32, (3,3),activation="relu", name="input_Conv")(imgInput)
+      x = layers.BatchNormalization()(imgInput)
+      x = layers.Conv2D(16, (3,3),activation="relu", name="input_Conv")(x)
       x = layers.BatchNormalization()(x)
-      output = layers.MaxPool2D((6,6), name="output_camra")(x)
-      return (imgInput,output)
+      x = layers.GlobalMaxPool2D(name="camera_maxPool_output")(x)
+      x = layers.BatchNormalization()(x)
+      return (imgInput,x)
 
     def _buildActionStateModel(self):
       inputShape = self._state_size+self._action_size
       actionStateInput = keras.Input(shape=(inputShape,), name='q_input')
       x = layers.BatchNormalization()(actionStateInput)
-      x = layers.Dense(100,  activation='relu')(x)
+      x = layers.Dense(75,  activation='relu', name="action_State_dense1")(x)
       x = layers.BatchNormalization()(x)
-      x = layers.Dense(64,  activation='relu')(x)
+      x = layers.Dense(50,  activation='relu', name="action_State_dense2")(x)
       x = layers.BatchNormalization()(x)
-      x = layers.Dense(32,  activation='relu', name="dense_output")(x)
+      x = layers.Dense(16,  activation='relu', name="action_State_dense_output")(x)
       x = layers.BatchNormalization()(x)
-      reshape = layers.Reshape(self._actionStateReshape, name="reshape")(x)
-      return (actionStateInput,reshape)
+      #reshape = layers.Reshape(self._actionStateReshape, name="action_State_reshape")(x)
+      return (actionStateInput,x)
 
 
 
@@ -163,16 +165,14 @@ class Agent:
     def _build_compile_model(self):
       inputImg, outputImg = self._buildCameraMoel()
       inputActionState, outputActionState = self._buildActionStateModel()
-      x = layers.add([outputImg, outputActionState])
+      x = layers.add([outputImg, outputActionState], name="add_actionstate_camera")
       x = layers.BatchNormalization()(x)
-      x = layers.Conv2D(16, (3,1),activation="relu")(x)
-      x = layers.Dense(20,  activation='relu')(x)
+      #x = layers.Conv2D(16, (3,1),activation="relu", name="combined_conv2d")(x)
+      x = layers.Dense(20,  activation='relu', name="combined_dense1")(x)
       x = layers.BatchNormalization()(x)
-      x = layers.Dense(10,  activation='relu')(x)
-      x = layers.Flatten()(x)
-      output = layers.Dense(self._networkOutputSize, activation='sigmoid')(x)    
+      output = layers.Dense(self._networkOutputSize, activation='sigmoid', name="output")(x)    
       model = keras.Model(inputs=[inputImg, inputActionState], outputs = output)
-      model.compile(loss=self._loss, optimizer=self._optimizer)
+      model.compile(loss=self.cross_entropy_loss, optimizer=self._optimizer)
       return model
 
 
@@ -200,8 +200,23 @@ class Agent:
 
 
     def get_valueFunction(self, next_state_action_array, next_camera):
-      target1 = self.getTarget1Network().predict_on_batch([next_camera, next_state_action_array])
-      target2 = self.getTarget2Network().predict_on_batch([next_camera,next_state_action_array])
+      target1 = self.getTarget1Network().predict([next_camera, next_state_action_array])
+      target2 = self.getTarget2Network().predict([next_camera,next_state_action_array])
+
+      if  np.isnan(next_state_action_array).any() or np.isnan(next_camera).any():
+        input("NANNN")
+
+      if np.isnan(target1).any() or np.isnan(target2).any():
+        print(target1)
+        input("wait")
+        print(target2)
+        input("wait2")
+        print(next_camera, np.isnan(next_camera).any(), next_camera.shape)
+        print(next_state_action_array, np.isnan(next_state_action_array).any())
+        input("next_state")
+        print(self.getTarget1Network().get_weights())
+        input("stop")
+        
       return np.minimum(target1, target2)
 
     
@@ -214,7 +229,7 @@ class Agent:
       #(32, BATCH,64,64,64,3)
       cameras = np.tile(camera, (self.cem_num_samples,1,1,1))
 
-      print(states.shape)
+      #print(states.shape)
   
       #print("CEM STATES", states, states.shape)
       self.cem.reset()
@@ -252,8 +267,11 @@ class Agent:
     def getTarget1Network(self):
       return self.targetNetworkList[self.actualTargetNetwork]
 
+      #return self.q_network
+
     def getTarget2Network(self):
       return self.targetNetworkList[(self.actualTargetNetwork-self.target2Index)%len(self.targetNetworkList)]
+      #return self.q_network
           
     def get_Action(self, enviroment, state, camera, training):
         if training and (np.random.rand() <= self.epsilon or self.train_step<100):
@@ -282,14 +300,14 @@ class Agent:
       
       #TODOO REFACtORING SMAPLES
       #Sample Next_Actions FROM CEM
-      print("sample")
+      #print("sample")
       #(BATCH, Actions)
       next_actions_samples = []
       for i  in range(batch_size):
         #(,Action)
         next_actions_samples.append(self._get_cem_optimal_Action(next_states[i], npNext_Cameras[i]))
 
-      print("next")
+      #print("next")
       next_actions = np.asarray(next_actions_samples)
       #print(next_actions)
       #print(next_states)

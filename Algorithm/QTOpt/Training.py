@@ -3,10 +3,16 @@ import random
 from IPython.display import clear_output
 import progressbar
 
+modelSrc  = "simulation/src/RLAlgorithm/Algorithm/QTOpt/saved_model/TEST"
+originSrc = 'simulation/src/RLAlgorithm/Algorithm/QTOpt/saved_model/DQN'
 
 
 
-def train(enviroment, agent, policyFunction, observationsize = 4, num_of_episodes=100, train=True, maxStepSize = 50 ):
+def train(enviroment, agent, policyFunction, observationsize = 4, num_of_episodes=100, train=True, maxStepSize = 50, loadModell = False ):
+
+    if loadModell:
+        print("load model")
+        agent.loadModel(modelSrc)
 
     if  not train:
         input("Run des modells")
@@ -53,6 +59,9 @@ def train(enviroment, agent, policyFunction, observationsize = 4, num_of_episode
             
             if terminated or step>=maxStepSize:
                 print("Episode {} Reward {}".format(e, rewardSum))
+                if train:
+                    agent.saveModel(modelSrc)
+                    print("Save Modell")
                 break
                 
             

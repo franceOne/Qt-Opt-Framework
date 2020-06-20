@@ -26,7 +26,7 @@ print("State",  enviroment.reset())
 def policyFunction(action):
     return action
 
-optimizer = tf.keras.optimizers.SGD(learning_rate=0.0001, momentum=0.9)
+optimizer = tf.keras.optimizers.SGD(learning_rate=0.00005, momentum=0.7)
 
 loss =  "mse"
 stateSize = 3
@@ -34,12 +34,13 @@ actionSize = 1
 agent = Agent(enviroment, optimizer, loss, policyFunction,  state_size=stateSize, action_size=actionSize, camerashape=enviroment.render(mode="rgb_array").shape)
 
 batch_size = 32
-num_of_episodes = 10
+num_of_episodes = 500
 agent.q_network.summary()
 
 
 
 print("Train")
-Training.train(enviroment, agent, policyFunction,  observationsize=stateSize, num_of_episodes=num_of_episodes, train=True , maxStepSize=100)
+Training.train(enviroment, agent, policyFunction,  observationsize=stateSize, num_of_episodes=num_of_episodes, train=True , maxStepSize=100, loadModell=True)
 print("RUN")
-Training.train(enviroment, agent, policyFunction, observationsize=stateSize,  num_of_episodes=100, train=False, maxStepSize=1000  )
+Training.train(enviroment, agent, policyFunction, observationsize=stateSize,  num_of_episodes=100, train=False, maxStepSize=300, loadModell=True)
+
