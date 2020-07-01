@@ -97,13 +97,19 @@ class Agent:
     def saveModel(self, url):
        self.q_network.save(url)
 
-      
+  
     def saveWeights(self, url):
-       self.q_network.save_weights(url)
+      self.q_network.save_weights(url)
 
     def loadWeights(self, url):
+      print(self.q_network.get_weights())
+      input("wait before load")
       self.q_network.load_weights(url)
+      print(self.q_network.get_weights())
+      input("wait after load")
       self.reset()
+      print(self.q_network.get_weights())
+      input("wait after reset")
 
 
     def loadModel(self, url):

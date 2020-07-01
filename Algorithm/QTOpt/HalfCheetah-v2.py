@@ -41,7 +41,7 @@ agent.q_network.summary()
 
 print("Train")
 Training.train(enviroment, agent, policyFunction,  observationsize=stateSize, num_of_episodes=num_of_episodes, 
-train=True , maxStepSize=100, loadModell=False, saveModell=True)
+train=True , maxStepSize=100, loadModell=True, saveModell=True)
 
 input("Testen des modells")
 Training.train(enviroment, agent, policyFunction, observationsize=stateSize,  num_of_episodes=100, train=False, maxStepSize=300, loadModell=True)
