@@ -238,7 +238,7 @@ class Agent:
 
     
 
-    def _get_cem_optimal_Action(self,state, camera):
+    def _get_cem_optimal_Action(self,state, camera, training):
       #print("CEM state", state)
  
       #(32, BATCH ,4)
@@ -258,7 +258,10 @@ class Agent:
         #print("CEM ActiONS", actions, actions.shape)
         stateActionArray = self.getStateActionArray(states, actions)
         #print("CEM STATe Action Array", stateActionArray, stateActionArray.shape)
-        q_values = self.getTarget1Network().predict_on_batch([cameras, stateActionArray])
+        if training:
+          q_values = self.getTarget1Network().predict_on_batch([cameras, stateActionArray])
+        else:
+          q_values = self.q_network.predict_on_batch([cameras, stateActionArray])
         reshaped_q_values = np.reshape(q_values, -1)
         #Max Index
         max_indx = np.argmax(reshaped_q_values)
@@ -296,7 +299,7 @@ class Agent:
             #print("Epsilon", action)
             return action
       
-        optimal_action = self._get_cem_optimal_Action(state, self.getReshapedImg(camera))
+        optimal_action = self._get_cem_optimal_Action(state, self.getReshapedImg(camera), training)
         #print("CEM", optimal_action)
         return optimal_action
         
@@ -323,7 +326,7 @@ class Agent:
       next_actions_samples = []
       for i  in range(batch_size):
         #(,Action)
-        next_actions_samples.append(self._get_cem_optimal_Action(next_states[i], npNext_Cameras[i]))
+        next_actions_samples.append(self._get_cem_optimal_Action(next_states[i], npNext_Cameras[i], True))
 
       #print("next")
       next_actions = np.asarray(next_actions_samples)
