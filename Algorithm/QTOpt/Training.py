@@ -3,27 +3,28 @@ import random
 from IPython.display import clear_output
 import progressbar
 
-modelSrc  = "simulation/src/RLAlgorithm/Algorithm/QTOpt/saved_model/TEST"
-originSrc = 'simulation/src/RLAlgorithm/Algorithm/QTOpt/saved_model/DQN'
+#modelSrc  = "simulation/src/RLAlgorithm/Algorithm/QTOpt/saved_model/TEST"
+#modelSrc = 'simulation/src/RLAlgorithm/Algorithm/QTOpt/saved_model/DQN'
+modelSrc = 'simulation/src/RLAlgorithm/Algorithm/QTOpt/saved_model/TEST2'
+
+
+modelSrcWeights=  'simulation/src/RLAlgorithm/Algorithm/QTOpt/saved_model/Weights/TEST2'
 
 
 
-def train(enviroment, agent, policyFunction, observationsize = 4, num_of_episodes=100, train=True, maxStepSize = 50, loadModell = False ):
+def train(enviroment, agent, policyFunction, observationsize = 4, num_of_episodes=100, train=True, maxStepSize = 50, loadModell = True, saveModell = False ):
 
     if loadModell:
-        print("load model")
-        agent.loadModel(modelSrc)
+        print("load model", modelSrcWeights)
+        agent.loadWeights(modelSrcWeights)
 
-    if  not train:
-        input("Run des modells")
+   
     for e in range(0, num_of_episodes):
         # Reset the enviroment
        
         state = enviroment.reset()
         #state = np.reshape(state, [1,observationsize])
 
-      
-        
         # Initialize variables
         rewardSum = 0
         terminated = False
@@ -59,9 +60,9 @@ def train(enviroment, agent, policyFunction, observationsize = 4, num_of_episode
             
             if terminated or step>=maxStepSize:
                 print("Episode {} Reward {}".format(e, rewardSum))
-                if train:
-                    agent.saveModel(modelSrc)
-                    print("Save Modell")
+                if train and saveModell:
+                    agent.saveWeights(modelSrcWeights)
+                    print("Save Modell", modelSrcWeights)
                 break
                 
             

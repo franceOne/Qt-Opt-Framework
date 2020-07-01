@@ -55,7 +55,7 @@ class Agent:
         self.target2Index = 2
     
         self.replayBufferMaxLength = 5000
-        self.replyBufferBatchSize = 32
+        self.replyBufferBatchSize = 64
         # (s,a, S', r)
         data_spec = (tf.TensorSpec(self._state_size, tf.float64, 'state'),
         tf.TensorSpec(self._action_size, tf.float64, 'action'),
@@ -97,6 +97,14 @@ class Agent:
     def saveModel(self, url):
        self.q_network.save(url)
 
+      
+    def saveWeights(self, url):
+       self.q_network.save_weights(url)
+
+    def loadWeights(self, url):
+      self.q_network.load_weights(url)
+      self.reset()
+
 
     def loadModel(self, url):
       self.q_network = tf.keras.models.load_model(url)  
@@ -107,8 +115,11 @@ class Agent:
       """
        -Sum(target log(pred)) = 
       """
+      
       cross_EntropySum =  y_actual * tf.keras.backend.log(y_pred)
       custom_loss= - cross_EntropySum
+      print(y_actual, y_pred, -custom_loss)
+      input("W")
       return -custom_loss
 
 
@@ -170,9 +181,9 @@ class Agent:
       #x = layers.Conv2D(16, (3,1),activation="relu", name="combined_conv2d")(x)
       x = layers.Dense(20,  activation='relu', name="combined_dense1")(x)
       x = layers.BatchNormalization()(x)
-      output = layers.Dense(self._networkOutputSize, activation='sigmoid', name="output")(x)    
+      output = layers.Dense(self._networkOutputSize, activation='linear', name="output")(x)    
       model = keras.Model(inputs=[inputImg, inputActionState], outputs = output)
-      model.compile(loss=self.cross_entropy_loss, optimizer=self._optimizer)
+      model.compile(loss=self._loss, optimizer=self._optimizer)
       return model
 
 
@@ -285,6 +296,7 @@ class Agent:
         
     def train(self ,states, actions, cameras, next_states, next_cameras, rewards, terminates, batch_size):
       self.train_step += 1
+      #print("train")
 
       npTerminates = np.asarray(terminates)
       npRewards = np.asarray(rewards)
@@ -349,10 +361,11 @@ class Agent:
 
       #print("Rward", npRewards[0])
 
-      #print("Should Target", npRewards[0] + self.gamma * np.amax(q_next[0])*intTerminates[0] )
+     # print("Should Target", npRewards[0] + self.gamma * np.amax(q_next[0])*intTerminates[0] )
 
       #print("output Calc", npRewards + self.gamma* np.amax(q_next, axis=1)*intTerminates )
       
+      #print("QValues", q_values)
       #print("Full Target Q", q_target)
       #input("wait")
       
