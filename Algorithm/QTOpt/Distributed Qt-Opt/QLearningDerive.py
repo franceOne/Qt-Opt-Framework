@@ -153,6 +153,9 @@ class Agent:
     def getStateActionArray(self, state, action):
        return np.concatenate((action, state), axis=1) 
 
+    def getQNetwork(self):
+      return self.q_network
+
 
     def _buildCameraMoel(self):
       imgInput =   keras.Input(shape=(self._imgReshapeWithDepth), name='img_input')

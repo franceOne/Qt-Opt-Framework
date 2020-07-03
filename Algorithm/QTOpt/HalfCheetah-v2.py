@@ -29,7 +29,7 @@ def policyFunction(action):
 optimizer = tf.keras.optimizers.SGD(learning_rate=0.0005, momentum=0.7, clipvalue=5)
 
 loss =  "mse"
-stateSize = 3
+stateSize = 1
 actionSize = 1
 agent = Agent(enviroment, optimizer, loss, policyFunction,  state_size=stateSize, action_size=actionSize, camerashape=enviroment.render(mode="rgb_array").shape)
 
@@ -40,8 +40,7 @@ agent.q_network.summary()
 
 
 print("Train")
-#Training.train(enviroment, agent, policyFunction,  observationsize=stateSize, num_of_episodes=num_of_episodes, 
-train=True , maxStepSize=100, loadModell=True, saveModell=True)
+Training.train(enviroment, agent, policyFunction,  observationsize=stateSize, num_of_episodes=num_of_episodes, train=True , maxStepSize=100, loadModell=True, saveModell=True)
 
 input("Testen des modells")
 Training.train(enviroment, agent, policyFunction, observationsize=stateSize,  num_of_episodes=100, train=False, maxStepSize=100, loadModell=True)
