@@ -15,7 +15,7 @@ import tensorflow.keras.backend as kb
 
 
 class Model:
-    def __init__(self, enviroment, optimizer, loss,  action_space_policy, storedUrl,  state_size= 4, action_size= 1, camerashape = (500,500,3),  cem_update_itr = 2, select_num = 6, num_samples = 64):
+    def __init__(self, modelClientWrapper, lock, enviroment, optimizer, loss,  action_space_policy, storedUrl = None ,  state_size= 4, action_size= 1, camerashape = (500,500,3),  cem_update_itr = 2, select_num = 6, num_samples = 64):
         #Model Properties
         self._state_size = state_size
         self._action_size = action_size
@@ -28,11 +28,13 @@ class Model:
         self._imgReshapeWithDepth =  cameraShape = tuple(cameraShapeList)
         self._networkOutputSize = 1
         self._actionStateReshape = (None,32)
+        self.lock = lock
       
         self._optimizer = optimizer
-        self._loss = loss
+        self._loss = tf.keras.losses.MSE
 
         self.url = storedUrl
+        self.modelClientWrapper = modelClientWrapper
 
 
         #CEM
@@ -53,62 +55,42 @@ class Model:
 
          # Build networks
         self.q_network = self._build_compile_model()
-        self.numLaggedNNetwork = 3
 
-        #Lagges Network
-        self.actualLaggedNetwork = 0
-        self._laggedTargetNetworkList = [tf.keras.models.clone_model(self.q_network) for _ in range(self.numLaggedNNetwork)]
+        if storedUrl:
+          self.q_network.load_weights(self.url)
+          self.modelClientWrapper.storeQNetwork(self.q_network.get_weights())
+       
 
-        #TargetNetworks
-        self.numTagetNetworks = 3
-        self.actualTargetNetwork = 0
-        self.target2Index = 2
-        self.targetNetworkList = [tf.keras.models.clone_model(self.q_network) for _ in range(self.numTagetNetworks)]
 
-        self.initWeights()      
-        self.alighn_target_model()
+    def getOptimizer(self):
+      return self._optimizer
 
-   
+    def getLoss(self):
+      return self._loss
    
     def getQNetwork(self):
-      return self.q_network
+      with self.lock:
+        weights = self.modelClientWrapper.getQNetwork()
+        newModel = self._build_compile_model()
+        newModel.set_weights(weights)
+        return newModel
 
-    def initWeights(self):
-      for i in range(self.numTagetNetworks):
-         self.targetNetworkList[i].set_weights(self.q_network.get_weights())
-
-      for i in range(self.numLaggedNNetwork):
-          self._laggedTargetNetworkList[i].set_weights(self.q_network.get_weights())
-
-
-     
-    def reset(self):
-      self.initWeights()
-      self.alighn_target_model()
-
-    def saveModel(self):
-       self.q_network.save(self.url)
+    def getQNetwork_without_compile(self):
+      with self.lock:
+        weights = self.modelClientWrapper.getQNetwork()
+        newModel = self._build_compile_model_without_compile()
+        newModel.set_weights(weights)
+        return newModel
 
   
-    def saveWeights(self):
-      self.q_network.save_weights(self.url)
+    def saveWeights(self, weights):
+      self.modelClientWrapper.storeQNetwork(weights)
       
     def loadWeights(self):
-      print(self.q_network.get_weights())
-      input("wait before load")
+      #print(self.q_network.get_weights())
       self.q_network.load_weights(self.url)
-      print(self.q_network.get_weights())
-      input("wait after load")
-      self.reset()
-      #self.checkWeights()
-      #input("wait")
-    
-
-
-    def loadModel(self, url):
-      self.q_network = tf.keras.models.load_model(url)  
-      self.reset()
-     
+      self.modelClientWrapper.storeQNetwork(self.q_network.get_weights())
+      
 
 
     def checkWeights(self):
@@ -121,24 +103,13 @@ class Model:
         print("targetNetwork", self.targetNetworkList[i].get_weights()[0:3])
 
 
-    def alighn_target_model(self):
-      self.updateLaggedNetworks()
-      targetNetwrok1EMAWeights = self.calculateEma(self.q_network.get_weights(), self.getLaggedNetwork().get_weights())
-      
-      
-      newTargetIndex = (self.actualTargetNetwork+1)%self.numTagetNetworks     
-      self.targetNetworkList[newTargetIndex].set_weights(targetNetwrok1EMAWeights)
-      self.actualTargetNetwork = newTargetIndex
 
-    
-
-
+  
     def updateLaggedNetworks(self):
       newLaggedNetworkIndex = (self.actualLaggedNetwork+1)%len(self._laggedTargetNetworkList)
       self._laggedTargetNetworkList[newLaggedNetworkIndex].set_weights(self.q_network.get_weights())
       
       self.actualLaggedNetwork = newLaggedNetworkIndex
-
 
 
     def getReshapedImg(self, img):
@@ -181,9 +152,7 @@ class Model:
       #reshape = layers.Reshape(self._actionStateReshape, name="action_State_reshape")(x)
       return (actionStateInput,x)
 
-    
-
-
+  
 
       
     def _build_compile_model(self):
@@ -200,52 +169,47 @@ class Model:
       return model
 
 
-    def getLaggedNetwork(self):
-      return self._laggedTargetNetworkList[self.actualLaggedNetwork]
-        
+    def _build_compile_model_without_compile(self):
+      inputImg, outputImg = self._buildCameraModel()
+      inputActionState, outputActionState = self._buildActionStateModel()
+      x = layers.add([outputImg, outputActionState], name="add_actionstate_camera")
+      x = layers.BatchNormalization()(x)
+      #x = layers.Conv2D(16, (3,1),activation="relu", name="combined_conv2d")(x)
+      x = layers.Dense(20,  activation='relu', name="combined_dense1")(x)
+      x = layers.BatchNormalization()(x)
+      output = layers.Dense(self._networkOutputSize, activation='linear', name="output")(x)    
+      model = keras.Model(inputs=[inputImg, inputActionState], outputs = output)
+      model.compile(loss=self._loss, optimizer=self._optimizer)
+      return model
 
 
-    def calculateEma(self,weightsN ,weightsN_1):
-      weightsN  = np.asarray(weightsN)
-      weightsN_1 = np.asarray(weightsN_1)
-      alpha =  self._emaFactor
-      akpha_1 = 1- self._emaFactor
-      return  (alpha * weightsN_1) + (akpha_1 * weightsN)
-
-   
-
-    def get_valueFunction(self, next_state_action_array, next_camera):
-      target1 = self.getTarget1Network().predict([next_camera, next_state_action_array])
-      target2 = self.getTarget2Network().predict([next_camera,next_state_action_array])
-
-      if  np.isnan(next_state_action_array).any() or np.isnan(next_camera).any():
-        input("NANNN")
-
-      if np.isnan(target1).any() or np.isnan(target2).any():
-        print(target1)
-        input("wait")
-        print(target2)
-        input("wait2")
-        print(next_camera, np.isnan(next_camera).any(), next_camera.shape)
-        print(next_state_action_array, np.isnan(next_state_action_array).any())
-        input("next_state")
-        print(self.getTarget1Network().get_weights())
-        input("stop")
-        
-      return np.minimum(target1, target2)
 
 
     def getTarget1Network(self):
-      return self.targetNetworkList[self.actualTargetNetwork]
+      with self.lock:
+        target1, target2 = self.modelClientWrapper.getTargetNetworks()
+        if(target1) is not None:
+          model = self._build_compile_model()
+          model.set_weights(target1)
+          return  model
+        else:
+          print("MODEL: ERROR FETCHING QNETWORK 1")
 
 
     def getTarget2Network(self):
-      return self.targetNetworkList[(self.actualTargetNetwork-self.target2Index)%len(self.targetNetworkList)]
+      with self.lock:
+        target1, target2 = self.modelClientWrapper.getTargetNetworks()
+        if(target2 is not None):
+          model = self._build_compile_model()
+          model.set_weights(target2)
+          return  model
+        else:
+          print("MODEL: ERROR FETCHING QNETWORK 2")
 
 
     def _get_cem_optimal_Action(self,state, camera, training, networkToUse = None):
       #print("CEM state", state)
- 
+
       #(32, BATCH ,4)
       states = np.tile(state, (self.cem_num_samples,1))
       #(32, BATCH,64,64,64,3)

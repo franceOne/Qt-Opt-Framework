@@ -25,18 +25,19 @@ class ReplayBuffer:
         cameraShapeList[1] = _imgReshapeSize
         self._imgReshapeWithDepth =  cameraShape = tuple(cameraShapeList)
 
-        self.replayBufferMaxLength = 5000
+        self.onlineBufferMaxLengh = 5000
+        self.trainBufferMaxLength = 5000
+        self.offlineBuffferMaxLength = 10000
 
 
-        self.onlineBuffer = self.initOnlineAndOfflineBuffers()
+        self.onlineBuffer = self.initOnlineAndOfflineBuffers("online")
+        self.offlineBuffer =  self.initOnlineAndOfflineBuffers("offline")
         self.trainBuffer = self.initTrainBuffer()
 
 
     def storeTrainBuffer(self, state, action, camera, reward, next_state, next_camera, terminated, q_target_value, batch_size):
-      
-        
         for i in range(batch_size):
-          
+        
             stateData = state[i]
             actionData = action[i]
             cameraData = camera[i]
@@ -45,7 +46,7 @@ class ReplayBuffer:
             next_cameraData = next_camera[i]
             terminatedData = terminated[i]
             q_target_valueData = q_target_value[i]
-         
+
             values = (stateData, tf.dtypes.cast(actionData, tf.float64), tf.dtypes.cast(cameraData, tf.float32), next_stateData, tf.dtypes.cast(next_cameraData, tf.float32), rewardData, terminatedData, tf.dtypes.cast(q_target_valueData,tf.float32))
             nestedStructure = tf.nest.map_structure(lambda t: tf.stack([t]* 1),values)
             self.trainBuffer.add_batch(nestedStructure)
@@ -53,32 +54,30 @@ class ReplayBuffer:
     def storeOnlineData(self,  state, action, camera, reward, next_state, next_camera, terminated):
         
         #(s,a,c, s', c', r t)
-        values = (state, tf.dtypes.cast(action, tf.float64), camera, next_state, next_camera, reward, terminated)
+        values = (state, tf.dtypes.cast(action, tf.float64), tf.dtypes.cast(camera, tf.float32), next_state, tf.dtypes.cast(next_camera, tf.float32), tf.dtypes.cast(reward, tf.float64), terminated)
         nestedStructure = tf.nest.map_structure(lambda t: tf.stack([t]* 1),values)
         self.onlineBuffer.add_batch(nestedStructure)
+      
+
+    def storeOfflineData(self,  state, action, camera, reward, next_state, next_camera, terminated):
+        
+        #(s,a,c, s', c', r t)
+        values = (state, tf.dtypes.cast(action, tf.float64), tf.dtypes.cast(camera, tf.float32), next_state, tf.dtypes.cast(next_camera, tf.float32), tf.dtypes.cast(reward, tf.float64), terminated)
+        nestedStructure = tf.nest.map_structure(lambda t: tf.stack([t]* 1),values)
+        self.offlineBuffer.add_batch(nestedStructure)
+       
 
 
-    def getOnlineDataSize(self):
+    def getOnlineBufferSize(self):
         return  self.onlineBuffer.num_frames()
 
+    def getOfflineBufferSize(self):
+        return  self.offlineBuffer.num_frames()
 
-    
-    def getTrainDataSize(self):
+    def getTrainBufferSize(self):
         return  self.trainBuffer.num_frames()
-
-
-
-
-    def storeOfflineData(self, state, action, camera, reward, next_state, next_camera, terminated):
-        #(s,a,c, s', c', r t)
-       
-        values = (state, tf.dtypes.cast(action, tf.float64), camera, next_state, next_camera, reward, terminated)
-        offlineBuffer = tf.nest.map_structure(lambda t: tf.stack([t]* 1),values)
-        self.replayBuffer.add_batch(nestedStructure)
-
     
-
-    def initOnlineAndOfflineBuffers(self):
+    def initOnlineAndOfflineBuffers(self, bufferType="online"):
          # (s,a, S', r)
         data_spec = (tf.TensorSpec(self._state_size, tf.float64, 'state'),
         tf.TensorSpec(self._action_size, tf.float64, 'action'),
@@ -87,7 +86,13 @@ class ReplayBuffer:
         tf.TensorSpec(self._imgReshapeWithDepth, tf.float32, 'next_camera'),
         tf.TensorSpec(1, tf.float64, 'reward'),
         tf.TensorSpec(1, tf.bool, 'terminated'))
-        return tf_uniform_replay_buffer.TFUniformReplayBuffer(data_spec, batch_size = 1, max_length=self.replayBufferMaxLength )
+        if(bufferType == "online"):
+            return tf_uniform_replay_buffer.TFUniformReplayBuffer(data_spec, batch_size = 1, max_length=self.onlineBufferMaxLengh )
+        elif(bufferType == "offline"):
+            return tf_uniform_replay_buffer.TFUniformReplayBuffer(data_spec, batch_size = 1, max_length=self.offlineBuffferMaxLength )
+        else:
+            print("Error init buffer")
+
 
     def getTrainBuffer(self, batch_size):
         dataset  = self.trainBuffer.as_dataset(sample_batch_size = batch_size, num_steps=1)
@@ -107,7 +112,7 @@ class ReplayBuffer:
         cameraShapeList = list(self._imgReshapeWithDepth)
         cameraShapeList.insert(0, batch_size)
         cameraShape = tuple(cameraShapeList)
-           
+        
         states = tf.reshape(states, (batch_size, self._state_size))
         actions = tf.reshape(actions, (batch_size,self._action_size))
         cameras = tf.reshape(cameras, cameraShape)
@@ -120,11 +125,38 @@ class ReplayBuffer:
         return (states, actions, cameras, next_states, next_cameras, rewards, terminates, q_values)
 
 
+
+    
     def getOnlineBuffer(self, batch_size):
-        return self.getOfflineBuffer(batch_size)
+        dataset  = self.onlineBuffer.as_dataset(sample_batch_size = batch_size, num_steps=1)
+        #print("before train")
+        iterator = iter(dataset)
+        (minibatch, prop) = next(iterator)
+       
+        states = minibatch[0]
+        actions = minibatch[1]
+        cameras = minibatch[2]
+        next_states = minibatch[3]
+        next_cameras = minibatch[4]
+        rewards = minibatch[5]
+        terminates = minibatch[6]
+
+        cameraShapeList = list(self._imgReshapeWithDepth)
+        cameraShapeList.insert(0, batch_size)
+        cameraShape = tuple(cameraShapeList)
+           
+        states = tf.reshape(states, (batch_size, self._state_size))
+        actions = tf.reshape(actions, (batch_size,self._action_size))
+        cameras = tf.reshape(cameras, cameraShape)
+        next_states = tf.reshape(next_states, (batch_size, self._state_size))
+        next_cameras = tf.reshape(next_cameras, cameraShape)
+        rewards = tf.reshape(rewards, (batch_size, 1))
+        terminates = tf.reshape(terminates, (batch_size,1))
+
+        return (states, actions, cameras, next_states, next_cameras, rewards, terminates)
 
     def getOfflineBuffer(self, batch_size):
-        dataset  = self.onlineBuffer.as_dataset(sample_batch_size = batch_size, num_steps=1)
+        dataset  = self.offlineBuffer.as_dataset(sample_batch_size = batch_size, num_steps=1)
         #print("before train")
         iterator = iter(dataset)
         (minibatch, prop) = next(iterator)
@@ -153,6 +185,8 @@ class ReplayBuffer:
 
 
 
+
+
     
     def initTrainBuffer(self):
          # (s,a, S', r, q_value)
@@ -164,4 +198,6 @@ class ReplayBuffer:
         tf.TensorSpec(1, tf.float64, 'reward'),
         tf.TensorSpec(1, tf.bool, 'terminated'),
         tf.TensorSpec(1, tf.float32, 'q_value'))
-        return tf_uniform_replay_buffer.TFUniformReplayBuffer(data_spec, batch_size = 1, max_length=self.replayBufferMaxLength )
+        return tf_uniform_replay_buffer.TFUniformReplayBuffer(data_spec, batch_size = 1, max_length=self.trainBufferMaxLength )
+
+

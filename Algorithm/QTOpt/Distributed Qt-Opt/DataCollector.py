@@ -1,50 +1,37 @@
-from tensorflow.keras import Model, Sequential
-from tensorflow.keras.layers import Dense, Embedding, Reshape
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras import layers
-from tensorflow import keras
-from tf_agents.trajectories import trajectory
-from tf_agents.replay_buffers import tf_uniform_replay_buffer
 import tensorflow as tf
 import numpy as np
 import random
 from IPython.display import clear_output
-import math
-from CEM import CEM
-import tensorflow.keras.backend as kb
-import random
-from IPython.display import clear_output
-from collections import deque
 import progressbar
+import os
 
 class DataCollector:
-    def __init__(self, buffer, agent, environment, action_space_policy, state_policy):
+    def __init__(self, id, clientWrapper, agent, environment, action_space_policy, state_policy, path = "/data"):
         self.agent = agent
-        self.buffer = buffer
+        self.environment = environment
+        self.clientWrapper = clientWrapper
+        self.path = path + "_"+str(id)
+        self.id = id
         
         #Init variables
                
         self.policyFunction = action_space_policy
-        self.environment = environment
         self.max_step_size = 100
         self.get_state = state_policy
     
 
-        self.num_of_episodes = 100
         self.target1Network = None
         self.updateTarget1Network()
 
 
-        self.step = 0
         self.episode = 0
-
+        self.minSize = None
       
 
-    def start(self, threadName  ="", delay = 0):
+
+    def start(self, lock, train = True, ):
         while True:
-         self.collectData()
-
-
+         self.collectData(train,lock)
 
 
     def getTarget1Network(self):
@@ -54,23 +41,89 @@ class DataCollector:
             self.updateTarget1Network()
             return self.target1Network
 
-
-    def storeData(state, action, concatenatedImage, reward, next_state, next_concatenatedImage, terminated):
-        self.buffer.storeOnlineData(state, action, concatenatedImage, reward, next_state, next_concatenatedImage, terminated)
-
-
     def updateTarget1Network(self):
         self.target1Network = self.agent.getTarget1Network()
 
-    
 
-          
+    def loadNumpy(self, path):
+        if not(os.path.exists(path)):
+            print("Path does not exist", path)
+            return None 
+        loaded_file = np.load(path)
+        return loaded_file
 
-    def collectData(self):
-         enviroment = self.environment
-         # Begin new Episode
-         for i in range(self.num_of_episodes):
-            
+    def getPath(self, path, output_filename):
+        homedir = os.path.expanduser("~")
+        # construct the directory string
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        pathset = os.path.join(dir_path, path)
+        path_to_store = os.path.join(pathset, output_filename)
+        return path_to_store
+
+
+
+    def numpySave(self,path, output_filename, data):
+        homedir = os.path.expanduser("~")
+        # construct the directory string
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        pathset = os.path.join(dir_path, path)
+        # check the directory does not exist
+        if not(os.path.exists(pathset)):
+            # create the directory you want to save to
+            os.mkdir(pathset)
+            ds = {"ORE_MAX_GIORNATA": 5}
+            # write the file in the new directory
+        path_to_store = os.path.join(pathset, output_filename)
+        oldData = self.loadNumpy(path_to_store)
+        #print("data", data.shape, oldData, data)
+
+        if self.minSize is not None:
+            oldData = oldData[0: self.minSize]
+       
+        newData = [data]
+        if oldData is not None:
+            newData = np.concatenate((oldData, [data]), axis= 0)
+            #print(output_filename, "olddata", oldData.shape, "data", data.shape, oldData, data)
+            #print("newData", newData)
+        np.save(path_to_store, newData)
+
+    def getMinSize(self, paths):
+        if self.minSize is not None:
+            return self.minSize
+        else:
+            sizes = []
+            for i in range(len(paths)):
+                data = self.loadNumpy(self.getPath(self.path, paths[i]))
+                if data is not None:
+                    sizes.append(len(data))
+                else:
+                    sizes.append(0)
+            self.minSize = min(sizes)
+            return self.minSize
+
+    def storeData(self, state, action, image, reward, next_state, next_image, terminated):
+        self.clientWrapper.storeOnlineData(state, action, image, reward, next_state, next_image, terminated)
+        
+        paths = ["state.npy", "action.npy", "image.npy", "reward.npy", "next_state.npy", "next_image.npy", "terminated.npy"]
+        self.getMinSize(paths)
+        self.numpySave(self.path, "state.npy", state)
+        self.numpySave(self.path, "action.npy", action)
+        self.numpySave(self.path, "image.npy", image)
+        self.numpySave(self.path,"reward.npy", np.array([reward]))
+        self.numpySave(self.path,"next_state.npy", next_state)
+        self.numpySave(self.path,"next_image.npy", next_image)
+        self.numpySave(self.path,"terminated.npy", np.array([terminated]))
+                
+
+      
+
+    def collectData(self, train, lock):
+        enviroment = self.environment
+        i = 0
+        print("Collect Data")
+        # Begin new Episode
+        while True:
+            i +=1
             # Reset the enviroment
             state = self.environment.reset()
 
@@ -78,16 +131,18 @@ class DataCollector:
             rewardSum = 0
             terminated = False
             step = 0
-            lastImage = enviroment.render(mode="rgb_array")
+           
             bar = progressbar.ProgressBar(maxval=self.max_step_size, widgets=[progressbar.Bar('=', '[', ']'), ' ', progressbar.Percentage()])
             bar.start()
-            bar.start()
-            camera = enviroment.render(mode="rgb_array")
             
-            if i % 2 == 0:
+            if i % 2 == 0 or not train:
                 self.updateTarget1Network()
                 print("fetch new TargetNetwork")
             #print(type(camera))
+
+            with lock:
+                lastImage = enviroment.render(mode="rgb_array")
+                camera = lastImage
 
 
             # Run Episode
@@ -95,25 +150,25 @@ class DataCollector:
                 #print("step")
 
                 #Render
-                enviroment.render()
+                if not train:
+                    enviroment.render()
+
                 concatenatedImage = np.concatenate((lastImage, camera), axis=0)
                 
                 # Run Action
-                action = self.agent.get_Action(enviroment, self.get_state(state), self.agent.getReshapedImg(concatenatedImage), True, self.getTarget1Network())
+                action = self.agent.get_Action(enviroment, self.get_state(state), self.agent.getReshapedImg(concatenatedImage), train, self.getTarget1Network())
                 action = self.policyFunction(action)
 
                 # Take action    
                 next_state, reward, terminated, info = enviroment.step(action)
-                next_camera  =  enviroment.render(mode="rgb_array")
+                with lock:
+                    next_camera  =  enviroment.render(mode="rgb_array")
 
                 next_concatenatedImage = np.concatenate((camera, next_camera), axis=0)
-                #print("is camera eq", np.array_equal(camera, next_camera))
-                #print("action", action, "terminated", terminated, "reward", reward)
-                #next_state = np.reshape(next_state, [1,observationsize]) 
-                self.buffer.storeOnlineData(self.get_state(state), action, self.agent.getReshapedImg(concatenatedImage), reward, self.get_state(next_state), self.agent.getReshapedImg(next_concatenatedImage), terminated)
+               
+                self.storeData(self.get_state(state), action, self.agent.getReshapedImg(concatenatedImage), reward, self.get_state(next_state), self.agent.getReshapedImg(next_concatenatedImage), terminated)
                 
                 #Update Counter
-                self.step  += 1
                 step += 1
                 rewardSum += reward
                 state = next_state
@@ -121,7 +176,7 @@ class DataCollector:
                 camera = next_camera
                 bar.update(step)
 
-                if terminated or step>=self.max_step_size:
+                if terminated or step >= self.max_step_size:
                     bar.finish()
                     print("**********************************")
                     print("Episode {} Reward {}".format(self.episode, rewardSum))
