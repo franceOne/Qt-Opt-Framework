@@ -1,8 +1,6 @@
 import gym
 import tensorflow as tf
 from RunClient import runClient
-from mujoco_py import GlfwContext
-GlfwContext(offscreen=True)  # Create a window to init GLFW.
 import numpy as np
 
 def createEnvironemnt(environment = "FetchPickAndPlace-v1"):
