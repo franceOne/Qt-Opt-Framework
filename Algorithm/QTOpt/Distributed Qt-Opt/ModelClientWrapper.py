@@ -60,7 +60,7 @@ class ModelClient:
       
         data = {'qradients': np.asarray(gradients).tolist()  }
         #
-        print("store gradients", len(gradients), gradients[0])
+        print("store gradients", len(gradients))
         #
         try:
             requests.post(url, json=data)

@@ -37,7 +37,7 @@ dataCollerctorNumber = 1,bellmannNumber = 1, trainingsWorkerNumber = 1, replayLo
 
     if replayLog:
         print("Run ReplayLog")
-        ReplayLog(dataCollectionPath+"_0/", client)
+        start_new_thread( ReplayLog(dataCollectionPath+"_0/", client))
         print("Finish ReplayLog")
 
 

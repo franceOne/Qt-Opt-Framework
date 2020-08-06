@@ -101,6 +101,7 @@ class Client:
             return state, action, camera, next_state, next_camera, reward, terminated
         except:
             print("Error fetching file")
+            return None, None, None, None, None, None, None
 
     def storeTrainBuffer(self, state, action, camera, reward, next_state, next_camera, terminated, q_target, batch_size):
         url = "http://"+self.server_host+"/storetraindata/"+str(batch_size)
@@ -136,6 +137,7 @@ class Client:
             return states, actions, cameras, next_states, next_cameras, rewards, terminates, q_target
         except:
             print("Error fetching file")
+            return None, None, None, None, None, None, None, None
                 
 
 
@@ -150,25 +152,4 @@ SERVER_PORT = 5000
 
 
 
-def example():
-    url = "http://"+SERVER_HOST+":"+str(SERVER_PORT)+API_PATH
-    while True:
-        input("\n\npress return...")
-        arr = np.random.rand(3,3)
-        compressed, u_sz, c_sz = compress_nparr(arr)
-        #
-        print("\nsending array to", url)
-        print("size in bits (orig, compressed):", u_sz, c_sz)
-        print(arr)
-        #
-        resp = requests.post(url, data=compressed,
-                            headers={'Content-Type': 'application/octet-stream'})
-        #
-        print("\nresponse:")
-        data = uncompress_nparr(resp.content)
-        print(data)
 
-
-    
-
-# ## MAIN CLIENT ROUTINE
