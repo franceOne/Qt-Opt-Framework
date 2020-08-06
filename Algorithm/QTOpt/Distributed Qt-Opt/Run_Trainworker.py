@@ -44,7 +44,7 @@ def createEnvironemnt(environment = "Pendulum-v0"):
 
 
 
-optimizer = tf.keras.optimizers.SGD(learning_rate=0.00005, momentum=0.7, clipvalue=10)
+optimizer = tf.keras.optimizers.SGD(learning_rate=0.00000005, momentum=0.7, clipvalue=2)
 
 
 #modelSrc  = "simulation/src/RLAlgorithm/Algorithm/QTOpt/saved_model/TEST"

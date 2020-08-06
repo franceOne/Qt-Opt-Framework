@@ -32,17 +32,19 @@ class Client:
 
     def storeOnlineData(self, state, action, camera, reward, next_state, next_camera, terminated):
         url = "http://"+self.server_host+"/storeonlinedata"
+
+        #print("State",type(state) , " \n Action", type(action),  "Camerat",type(camera), "\n Reward", type(reward), "Next_states,..", type(next_state), type(next_camera), "\n Term", type(terminated))
       
         data = {'state': np.asarray(state).tolist(), 'action': np.asarray(action).tolist(), 
-        'camera': np.asarray(camera).tolist(), 'next_camera': np.asarray(next_camera).tolist(), 'reward': reward, 'next_state': np.asarray(next_state).tolist(), 'terminated': terminated  }
+        'camera': np.asarray(camera).tolist(), 'next_camera': np.asarray(next_camera).tolist(), 'reward': reward.item(), 'next_state': np.asarray(next_state).tolist(), 'terminated': terminated  }
         #
         #print("\nstoreOnlineData to", url)
         #
         try:
             requests.post(url, json=data)
             #
-        except:
-            print("error store onlinedata")
+        except Exception as e:
+            print("error store onlinedata", e)
 
     def storeOfflineData(self, state, action, camera, reward, next_state, next_camera, terminated):
         url = "http://"+self.server_host+"/storeofflinedata"

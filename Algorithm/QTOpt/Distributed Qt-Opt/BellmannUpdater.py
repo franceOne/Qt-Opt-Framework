@@ -40,6 +40,9 @@ class BellmanUpdater:
         print("Run Bellmanupdater")
         states, actions, cameras, next_states, next_cameras, rewards, terminates = self.clientWrapper.getOnlineBuffer(self.batch_size)
         self.train(states, actions, cameras, next_states, next_cameras, rewards, terminates, self.batch_size)
+      else:
+          print("Bellmanupdater onlineBufferSize:", bufferSize, "Go Sleep")
+          time.sleep(10)
       
         
 

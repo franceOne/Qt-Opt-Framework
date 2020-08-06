@@ -22,6 +22,7 @@ import io
 import numpy as np
 import zlib
 import requests
+from time import sleep
 
 class ModelClient:
     def __init__(self, server_host):
@@ -39,6 +40,27 @@ class ModelClient:
         data = {'qnetwork': np.asarray(weights).tolist()  }
         #
         print("store qnetwork", len(weights), weights[0])
+        print("STOOOREE QNETWORK")
+        sleep(0.05)
+        #
+        try:
+            pass
+            requests.post(url, json=data)
+            #
+        except Exception as e:
+            print("error store QNetwork", e)
+
+    def updateNetworkByGradient(self, gradients):
+        url = "http://"+self.server_host+"/updatenetwork"
+
+        gradients = np.asarray(gradients).tolist() 
+
+        for i in range(len(gradients)):
+            gradients[i] = gradients[i].tolist() 
+      
+        data = {'qradients': np.asarray(gradients).tolist()  }
+        #
+        print("store gradients", len(gradients), gradients[0])
         #
         try:
             requests.post(url, json=data)

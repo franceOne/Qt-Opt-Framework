@@ -4,6 +4,8 @@ import random
 from IPython.display import clear_output
 import progressbar
 import os
+from mujoco_py import GlfwContext
+
 
 class DataCollector:
     def __init__(self, id, clientWrapper, agent, environment, action_space_policy, state_policy, path = "/data"):
@@ -12,6 +14,7 @@ class DataCollector:
         self.clientWrapper = clientWrapper
         self.path = path + "_"+str(id)
         self.id = id
+        
         
         #Init variables
                
@@ -30,8 +33,8 @@ class DataCollector:
 
 
     def start(self, lock, train = True, ):
-        while True:
-         self.collectData(train,lock)
+        GlfwContext(offscreen=True)  # Create a window to init GLFW.
+        self.collectData(train,lock)
 
 
     def getTarget1Network(self):
@@ -68,16 +71,17 @@ class DataCollector:
         dir_path = os.path.dirname(os.path.realpath(__file__))
         pathset = os.path.join(dir_path, path)
         # check the directory does not exist
+       
         if not(os.path.exists(pathset)):
             # create the directory you want to save to
-            os.mkdir(pathset)
+            os.makedirs(pathset)
             ds = {"ORE_MAX_GIORNATA": 5}
             # write the file in the new directory
         path_to_store = os.path.join(pathset, output_filename)
         oldData = self.loadNumpy(path_to_store)
         #print("data", data.shape, oldData, data)
 
-        if self.minSize is not None:
+        if self.minSize is not 0:
             oldData = oldData[0: self.minSize]
        
         newData = [data]
@@ -121,6 +125,7 @@ class DataCollector:
         enviroment = self.environment
         i = 0
         print("Collect Data")
+       
         # Begin new Episode
         while True:
             i +=1
@@ -141,7 +146,10 @@ class DataCollector:
             #print(type(camera))
 
             with lock:
+               
                 lastImage = enviroment.render(mode="rgb_array")
+                enviroment.render()
+                #enviroment.render(mode="human")
                 camera = lastImage
 
 
@@ -163,6 +171,7 @@ class DataCollector:
                 next_state, reward, terminated, info = enviroment.step(action)
                 with lock:
                     next_camera  =  enviroment.render(mode="rgb_array")
+                    enviroment.render()
 
                 next_concatenatedImage = np.concatenate((camera, next_camera), axis=0)
                
@@ -184,6 +193,8 @@ class DataCollector:
                     break
 
             self.episode += 1
+
+
 
 
 

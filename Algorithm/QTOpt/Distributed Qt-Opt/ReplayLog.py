@@ -18,10 +18,9 @@ class ReplayLog:
 
 
     def getData(self):
-        
         if not self.existPath():
             print("Path does not exist")
-            return None
+            return None, None, None, None, None, None, None
        
         state = np.load(self.path+ "state.npy")
         action = np.load(self.path+ "action.npy")
@@ -43,11 +42,11 @@ class ReplayLog:
     def storeOfflinedata(self):
         print("OfflineData will be loaded")
         state, action, image, reward, next_state, next_image, terminated = self.getData()
-        print(action.shape, image.shape, reward.shape, next_state.shape, next_image.shape, terminated.shape)
-        minSize = self.getMinSize([state, action, image, reward, next_state, next_image, terminated])
-        print(minSize)
         if state is not None:
-
+            print(action.shape, image.shape, reward.shape, next_state.shape, next_image.shape, terminated.shape)
+            minSize = self.getMinSize([state, action, image, reward, next_state, next_image, terminated])
+            print(minSize)
+       
             for i in range(minSize):
                 state_i = state[i]
                 action_i = action[i]

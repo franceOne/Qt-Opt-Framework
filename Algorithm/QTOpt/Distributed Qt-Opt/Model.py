@@ -56,11 +56,20 @@ class Model:
          # Build networks
         self.q_network = self._build_compile_model()
 
-        if storedUrl:
-          self.q_network.load_weights(self.url)
-          self.modelClientWrapper.storeQNetwork(self.q_network.get_weights())
+        if self.url:
+          try:
+            self.q_network.load_weights(self.url)
+            self.modelClientWrapper.storeQNetwork(self.q_network.get_weights())
+            print("Load Modell from file")
+          except Exception as e:
+            print("Network coult not been loaded", e)
        
 
+
+    def saveWeightsToFile(self, model):
+      if self.url:
+        model.save_weights(self.url)
+        print("Save Modell to file")
 
     def getOptimizer(self):
       return self._optimizer
@@ -73,23 +82,24 @@ class Model:
         weights = self.modelClientWrapper.getQNetwork()
         newModel = self._build_compile_model()
         newModel.set_weights(weights)
-        return newModel
-
-    def getQNetwork_without_compile(self):
-      with self.lock:
-        weights = self.modelClientWrapper.getQNetwork()
-        newModel = self._build_compile_model_without_compile()
-        newModel.set_weights(weights)
+        self.saveWeightsToFile(newModel)
         return newModel
 
   
     def saveWeights(self, weights):
       self.modelClientWrapper.storeQNetwork(weights)
+
+
+    def updateNetworkByGradient(self, gradients):
+      self.modelClientWrapper.updateNetworkByGradient(gradients)
       
     def loadWeights(self):
-      #print(self.q_network.get_weights())
-      self.q_network.load_weights(self.url)
-      self.modelClientWrapper.storeQNetwork(self.q_network.get_weights())
+      try:
+        self.q_network.load_weights(self.url)
+        self.modelClientWrapper.storeQNetwork(self.q_network.get_weights())
+      except:
+        print("Weights could not been loaded")
+
       
 
 
@@ -104,12 +114,13 @@ class Model:
 
 
 
-  
+    """
     def updateLaggedNetworks(self):
       newLaggedNetworkIndex = (self.actualLaggedNetwork+1)%len(self._laggedTargetNetworkList)
       self._laggedTargetNetworkList[newLaggedNetworkIndex].set_weights(self.q_network.get_weights())
       
       self.actualLaggedNetwork = newLaggedNetworkIndex
+    """
 
 
     def getReshapedImg(self, img):
@@ -153,7 +164,6 @@ class Model:
       return (actionStateInput,x)
 
   
-
       
     def _build_compile_model(self):
       inputImg, outputImg = self._buildCameraModel()
