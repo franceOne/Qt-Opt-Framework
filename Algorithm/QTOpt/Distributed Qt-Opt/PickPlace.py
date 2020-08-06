@@ -56,9 +56,9 @@ optimizer = tf.keras.optimizers.SGD(learning_rate=0.0005, momentum=0.7, clipvalu
 
 
 dataCollerctorNumber = 1
-bellmannNumber = 0
-trainingsWorkerNumber = 0
-replayLog = False
+bellmannNumber = 1
+trainingsWorkerNumber = 1
+replayLog = True
 
 
 def run():
