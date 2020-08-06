@@ -39,7 +39,11 @@ class BellmanUpdater:
       if bufferSize > self.batch_size:
         print("Run Bellmanupdater")
         states, actions, cameras, next_states, next_cameras, rewards, terminates = self.clientWrapper.getOnlineBuffer(self.batch_size)
-        self.train(states, actions, cameras, next_states, next_cameras, rewards, terminates, self.batch_size)
+        if states is not None:
+          self.train(states, actions, cameras, next_states, next_cameras, rewards, terminates, self.batch_size)
+        else:
+          print("Bellmann NONE", bufferSize, "Go Sleep")
+          time.sleep(10)
       else:
           print("Bellmanupdater onlineBufferSize:", bufferSize, "Go Sleep")
           time.sleep(10)
