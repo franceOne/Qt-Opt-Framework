@@ -157,9 +157,7 @@ class DataCollector:
             while not terminated:
                 #print("step")
 
-                #Render
-                if not train:
-
+              
                 concatenatedImage = np.concatenate((lastImage, camera), axis=0)
                 
                 # Run Action
