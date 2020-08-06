@@ -33,7 +33,7 @@ class DataCollector:
 
 
     def start(self, lock, train = True, ):
-        #GlfwContext(offscreen=True)  # Create a window to init GLFW.
+        GlfwContext(offscreen=True)  # Create a window to init GLFW.
         self.collectData(train,lock)
 
 
