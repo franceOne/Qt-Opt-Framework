@@ -33,7 +33,7 @@ class DataCollector:
 
 
     def start(self, lock, train = True, ):
-        GlfwContext(offscreen=True)  # Create a window to init GLFW.
+        #GlfwContext(offscreen=True)  # Create a window to init GLFW.
         self.collectData(train,lock)
 
 
@@ -148,7 +148,7 @@ class DataCollector:
             with lock:
                
                 lastImage = enviroment.render(mode="rgb_array")
-                enviroment.render()
+                #enviroment.render()
                 #enviroment.render(mode="human")
                 camera = lastImage
 
@@ -159,7 +159,6 @@ class DataCollector:
 
                 #Render
                 if not train:
-                    enviroment.render()
 
                 concatenatedImage = np.concatenate((lastImage, camera), axis=0)
                 
@@ -171,7 +170,7 @@ class DataCollector:
                 next_state, reward, terminated, info = enviroment.step(action)
                 with lock:
                     next_camera  =  enviroment.render(mode="rgb_array")
-                    enviroment.render()
+                    #enviroment.render()
 
                 next_concatenatedImage = np.concatenate((camera, next_camera), axis=0)
                
