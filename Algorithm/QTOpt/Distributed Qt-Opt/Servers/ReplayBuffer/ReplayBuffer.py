@@ -48,7 +48,7 @@ class ReplayBuffer:
         #(s,a,c, s', c', r t)
         values = (state, tf.dtypes.cast(action, tf.float64), tf.dtypes.cast(camera, tf.float32), next_state, tf.dtypes.cast(next_camera, tf.float32), tf.dtypes.cast(reward, tf.float64), terminated)
         
-        print(values, "VALUES") 
+        #print(values, "VALUES") 
         nestedStructure = tf.nest.map_structure(lambda t: tf.stack([t]* 1),values)
         self.onlineBuffer.add_batch(nestedStructure)
       

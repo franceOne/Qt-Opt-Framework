@@ -42,8 +42,8 @@ def storeOnlineData():
     next_camera = np.array(data['next_camera'])
     terminated = data['terminated']
 
-    print((state.shape), (action.shape), (camera.shape))
-    print((reward), (next_state.shape), (next_camera.shape), (terminated))
+    #print((state.shape), (action.shape), (camera.shape))
+    #print((reward), (next_state.shape), (next_camera.shape), (terminated))
   
     replayBuffer.storeOnlineData( state, action, camera, reward, next_state, next_camera, terminated)
     print("After sored", replayBuffer.getOnlineBufferSize())
