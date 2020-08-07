@@ -20,7 +20,7 @@ from ReplayLog import ReplayLog
 from ModelClientWrapper import ModelClient
 
 def runClient(stateSize, actionSize, camerashape, policyFunction, getState, getEnvironment, optimizer, loss, modelSrcWeights, dataCollectionPath, 
-dataCollerctorNumber = 1,bellmannNumber = 1, trainingsWorkerNumber = 1, replayLog =  True,  replayBufferPath = "localhost:5000", modelPath = "localhost:5001"  ):
+dataCollerctorNumber = 1,bellmannNumber = 1, trainingsWorkerNumber = 1, replayLog =  True, loadWeights = False,  replayBufferPath = "localhost:5000", modelPath = "localhost:5001"  ):
     main_lock = Lock()
     model_lock = Lock()
     client = Client(replayBufferPath)
@@ -28,7 +28,9 @@ dataCollerctorNumber = 1,bellmannNumber = 1, trainingsWorkerNumber = 1, replayLo
 
  
     agent = Md(modelClient, model_lock, getEnvironment(), optimizer, loss, policyFunction, modelSrcWeights,  state_size=stateSize, action_size= actionSize, camerashape=camerashape)
-    agent.loadWeights()
+    if loadWeights:
+        agent.loadWeights()
+        
     bellmannUpdater = BellmanUpdater(client, agent)
     trainingsworker = Trainingworkers(client,  agent)
 
