@@ -2,12 +2,33 @@ import gym
 import tensorflow as tf
 from RunClient import runClient
 import numpy as np
+import sys
 
 def createEnvironemnt(environment = "FetchPickAndPlace-v1"):
     return gym.make(environment).env
 
 
+
+dataCollerctorNumber = 1
+bellmannNumber = 1
+trainingsWorkerNumber = 1
+replayLog = False
+
+def get_arg(i):
+    return int(sys.argv[i])
+
+for i in range(1, len(sys.argv)):
+    if i == 1:
+        dataCollerctorNumber = int(sys.argv[i])
+    if i == 2:
+        bellmannNumber = get_arg(i)
+    if i == 3:
+        trainingsWorkerNumber = get_arg(i)
+    if i == 4:
+        replayLog = True
+
 enviroment = createEnvironemnt()
+
 
 print('Number of states: {} '.format(enviroment.observation_space))
 print('Number of actions: {} '.format(enviroment.action_space, enviroment.action_space, enviroment.action_space  ))
@@ -55,10 +76,7 @@ loss =  "mse"
 optimizer = tf.keras.optimizers.SGD(learning_rate=0.0005, momentum=0.7, clipvalue=10)
 
 
-dataCollerctorNumber = 1
-bellmannNumber = 1
-trainingsWorkerNumber = 1
-replayLog = False
+
 
 
 def run():
