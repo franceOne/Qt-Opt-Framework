@@ -8,7 +8,7 @@ from mujoco_py import GlfwContext
 
 
 class DataCollector:
-    def __init__(self, id, clientWrapper, agent, environment, action_space_policy, state_policy, path = "/data"):
+    def __init__(self, id, clientWrapper, agent, environment, action_space_policy, state_policy, reward_policy, path = "/data"):
         self.agent = agent
         self.environment = environment
         self.clientWrapper = clientWrapper
@@ -21,6 +21,7 @@ class DataCollector:
         self.policyFunction = action_space_policy
         self.max_step_size = 100
         self.get_state = state_policy
+        self.reward_policy = reward_policy
     
 
         self.target1Network = None
@@ -146,7 +147,6 @@ class DataCollector:
             #print(type(camera))
 
             with lock:
-               
                 lastImage = enviroment.render(mode="rgb_array")
                 #enviroment.render()
                 #enviroment.render(mode="human")
@@ -165,7 +165,10 @@ class DataCollector:
                 action = self.policyFunction(action)
 
                 # Take action    
-                next_state, reward, terminated, info = enviroment.step(action)
+                reward_policy, reward, terminated, info = enviroment.step(action)
+                reward = self.reward_policy(next_state,reward)
+                next_state = self.get_state(next_state)
+
                 with lock:
                     next_camera  =  enviroment.render(mode="rgb_array")
                     #enviroment.render()

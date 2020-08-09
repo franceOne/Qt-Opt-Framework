@@ -19,14 +19,17 @@ from clientWrapper import Client
 from ReplayLog import ReplayLog
 from ModelClientWrapper import ModelClient
 
-def runClient(stateSize, actionSize, camerashape, policyFunction, getState, getEnvironment, optimizer, loss, modelSrcWeights, dataCollectionPath, 
+def runClient(stateSize, actionSize, camerashape, functions, getEnvironment, optimizer, loss, modelSrcWeights, dataCollectionPath, 
 dataCollerctorNumber = 1,bellmannNumber = 1, trainingsWorkerNumber = 1, replayLog =  True, loadWeights = False,  replayBufferPath = "localhost:5000", modelPath = "localhost:5001"  ):
+    #Inits
     main_lock = Lock()
     model_lock = Lock()
+    getData, getState, getObservation, getReward, policyFunction = functions()
+    
+    # Client- Helpers
     client = Client(replayBufferPath)
     modelClient = ModelClient(modelPath)
 
- 
     agent = Md(modelClient, model_lock, getEnvironment(), optimizer, loss, policyFunction, modelSrcWeights,  state_size=stateSize, action_size= actionSize, camerashape=camerashape)
     if loadWeights:
         agent.loadWeights()
@@ -35,8 +38,6 @@ dataCollerctorNumber = 1,bellmannNumber = 1, trainingsWorkerNumber = 1, replayLo
     trainingsworker = Trainingworkers(client,  agent)
 
    
-
-
     if replayLog:
         print("Run ReplayLog")
         start_new_thread( ReplayLog(dataCollectionPath+"_0/", client))
@@ -45,7 +46,7 @@ dataCollerctorNumber = 1,bellmannNumber = 1, trainingsWorkerNumber = 1, replayLo
 
     for i in range(dataCollerctorNumber):
         print("start datacollector", i)
-        start_new_thread(DataCollector(i, client,  agent, getEnvironment(), policyFunction, getState, dataCollectionPath).start, (main_lock, True))
+        start_new_thread(DataCollector(i, client,  agent, getEnvironment(), policyFunction, getState, getReward, dataCollectionPath).start, (main_lock, True))
     
     for i in range(bellmannNumber):
         print("start belmann updater", i)
