@@ -58,8 +58,14 @@ def getState(state):
 def getReward(state, reward):
     archieved_goal = state["achieved_goal"]
     desired_goal = state["desired_goal"]
-    dist = -np.linalg.norm(archieved_goal-desired_goal) 
-    return dist
+    observation = state["observation"]
+    grip  = observation[0:3]
+    abs_object = observation[3:6]
+    rel_object = observation[6:9]
+    dis_grip_obj = np.linalg.norm(abs_object- grip)
+    dis_obj_goal = np.linalg.norm(archieved_goal-desired_goal)
+    dist = -( dis_grip_obj + dis_obj_goal )
+    return reward + dist
 
 def getObservation(envrionment, state ):
     return state["observation"]
@@ -75,22 +81,26 @@ def returnFunctions():
 
 
 
-state = enviroment.reset()
-print(state["achieved_goal"], state["desired_goal"] )
-getReward(state, 0)
-exit(1)
-
 modelSrcWeights=  'saved_model/Weights/TEST/Pick_Place/FullState'
-dataCollectionPath = 'saved_model/buffer/TEST3/Pick_Place/FullState/NumpyData'
-
-
+dataCollectionPath = 'saved_model/buffer/TEST4/Pick_Place/FullState/NumpyData'
 camerashape=  (500,500,3)
 loss =  "mse"
 optimizer = tf.keras.optimizers.SGD(learning_rate=0.0005, momentum=0.7, clipvalue=10)
 
 
 
+state = enviroment.reset()
 
+print(state["observation"], "\n", state["achieved_goal"], "\n", state["desired_goal"], "\n")
+observation = state["observation"]
+grip  = observation[0:3]
+abs_object = observation[3:6]
+rel_object = observation[6:9]
+
+print(grip, abs_object, "\n", rel_object, "\n" , abs_object-grip)
+
+print("Rel_object", rel_object)
+print("Gripper state", grip)
 
 def run():
     runClient(config["stateSize"], config["actionSize"], camerashape, 

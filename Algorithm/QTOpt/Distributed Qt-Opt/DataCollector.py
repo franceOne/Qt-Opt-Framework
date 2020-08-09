@@ -34,7 +34,7 @@ class DataCollector:
 
 
     def start(self, lock, train = True, ):
-        #GlfwContext(offscreen=True)  # Create a window to init GLFW.
+        GlfwContext(offscreen=True)  # Create a window to init GLFW.
         self.collectData(train,lock)
 
 
@@ -132,6 +132,7 @@ class DataCollector:
             i +=1
             # Reset the enviroment
             state = self.environment.reset()
+            state = self.get_state(state)
 
             # Initialize variables
             rewardSum = 0
@@ -141,41 +142,38 @@ class DataCollector:
             bar = progressbar.ProgressBar(maxval=self.max_step_size, widgets=[progressbar.Bar('=', '[', ']'), ' ', progressbar.Percentage()])
             bar.start()
             
-            if i % 2 == 0 or not train:
+            if i % 10 == 0 or not train:
                 self.updateTarget1Network()
                 print("fetch new TargetNetwork")
-            #print(type(camera))
 
             with lock:
                 lastImage = enviroment.render(mode="rgb_array")
-                #enviroment.render()
-                #enviroment.render(mode="human")
+                enviroment.render()
                 camera = lastImage
 
 
             # Run Episode
             while not terminated:
-                #print("step")
-
               
                 concatenatedImage = np.concatenate((lastImage, camera), axis=0)
                 
                 # Run Action
-                action = self.agent.get_Action(enviroment, self.get_state(state), self.agent.getReshapedImg(concatenatedImage), train, self.getTarget1Network())
+                action = self.agent.get_Action(enviroment, state, self.agent.getReshapedImg(concatenatedImage), train, self.getTarget1Network())
                 action = self.policyFunction(action)
 
                 # Take action    
-                reward_policy, reward, terminated, info = enviroment.step(action)
+                next_state, reward, terminated, info = enviroment.step(action)
                 reward = self.reward_policy(next_state,reward)
+                print("Reward", reward)
                 next_state = self.get_state(next_state)
 
                 with lock:
                     next_camera  =  enviroment.render(mode="rgb_array")
-                    #enviroment.render()
+                    enviroment.render()
 
                 next_concatenatedImage = np.concatenate((camera, next_camera), axis=0)
                
-                self.storeData(self.get_state(state), action, self.agent.getReshapedImg(concatenatedImage), reward, self.get_state(next_state), self.agent.getReshapedImg(next_concatenatedImage), terminated)
+                self.storeData(state, action, self.agent.getReshapedImg(concatenatedImage), reward, next_state, self.agent.getReshapedImg(next_concatenatedImage), terminated)
                 
                 #Update Counter
                 step += 1

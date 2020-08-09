@@ -25,6 +25,8 @@ dataCollerctorNumber = 1,bellmannNumber = 1, trainingsWorkerNumber = 1, replayLo
     main_lock = Lock()
     model_lock = Lock()
     getData, getState, getObservation, getReward, policyFunction = functions()
+
+    print("\n DataCollectors:", dataCollerctorNumber, "\n Bellmans:", bellmannNumber, "\n Trainingsworkers:", trainingsWorkerNumber, "\n replayLog", replayLog)
     
     # Client- Helpers
     client = Client(replayBufferPath)
