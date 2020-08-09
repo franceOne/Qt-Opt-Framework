@@ -8,12 +8,13 @@ from mujoco_py import GlfwContext
 
 
 class DataCollector:
-    def __init__(self, id, clientWrapper, agent, environment, action_space_policy, state_policy, reward_policy, path = "/data"):
+    def __init__(self, id, clientWrapper, agent, environment, action_space_policy, state_policy, reward_policy, path = "/data", cluster = True):
         self.agent = agent
         self.environment = environment
         self.clientWrapper = clientWrapper
         self.path = path + "_"+str(id)
         self.id = id
+        self.cluster = cluster
         
         
         #Init variables
@@ -34,7 +35,8 @@ class DataCollector:
 
 
     def start(self, lock, train = True, ):
-        GlfwContext(offscreen=True)  # Create a window to init GLFW.
+        if not self.cluster:
+            GlfwContext(offscreen=True)  # Create a window to init GLFW.
         self.collectData(train,lock)
 
 
@@ -148,7 +150,8 @@ class DataCollector:
 
             with lock:
                 lastImage = enviroment.render(mode="rgb_array")
-                enviroment.render()
+                if not self.cluster:
+                    enviroment.render()
                 camera = lastImage
 
 
@@ -169,7 +172,8 @@ class DataCollector:
 
                 with lock:
                     next_camera  =  enviroment.render(mode="rgb_array")
-                    enviroment.render()
+                    if not self.cluster:
+                        enviroment.render()
 
                 next_concatenatedImage = np.concatenate((camera, next_camera), axis=0)
                

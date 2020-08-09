@@ -81,8 +81,8 @@ def returnFunctions():
 
 
 
-modelSrcWeights=  'saved_model/Weights/TEST/Pick_Place/FullState'
-dataCollectionPath = 'saved_model/buffer/TEST4/Pick_Place/FullState/NumpyData'
+modelSrcWeights=  'saved_model/Weights/Reward/Pick_Place/FullState'
+dataCollectionPath = 'saved_model/buffer/Reward/Pick_Place/FullState/NumpyData'
 camerashape=  (500,500,3)
 loss =  "mse"
 optimizer = tf.keras.optimizers.SGD(learning_rate=0.0005, momentum=0.7, clipvalue=10)
@@ -90,6 +90,7 @@ optimizer = tf.keras.optimizers.SGD(learning_rate=0.0005, momentum=0.7, clipvalu
 
 
 state = enviroment.reset()
+enviroment.render(mode="rgb_array")
 
 print(state["observation"], "\n", state["achieved_goal"], "\n", state["desired_goal"], "\n")
 observation = state["observation"]
