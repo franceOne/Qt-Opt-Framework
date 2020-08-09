@@ -167,7 +167,7 @@ class DataCollector:
                 # Take action    
                 next_state, reward, terminated, info = enviroment.step(action)
                 reward = self.reward_policy(next_state,reward)
-                print("Reward", reward)
+                #print("Reward", reward)
                 next_state = self.get_state(next_state)
 
                 with lock:
