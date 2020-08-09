@@ -90,7 +90,6 @@ optimizer = tf.keras.optimizers.SGD(learning_rate=0.0005, momentum=0.7, clipvalu
 
 
 state = enviroment.reset()
-enviroment.render(mode="rgb_array")
 
 print(state["observation"], "\n", state["achieved_goal"], "\n", state["desired_goal"], "\n")
 observation = state["observation"]
