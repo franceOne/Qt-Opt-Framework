@@ -82,6 +82,10 @@ ERROR: GLEW initalization error: Missing GL version
 Mon Aug 10 00:43:46 2020
 ERROR: GLEW initalization error: Missing GL version
 
+<<<<<<< Updated upstream:Algorithm/QTOpt/Distributed Qt-Opt/MUJOCO_LOG.TXT
 Mon Aug 10 00:45:20 2020
+=======
+Mon Aug 10 21:25:33 2020
+>>>>>>> Stashed changes:Algorithm/QTOpt/dis/MUJOCO_LOG.TXT
 ERROR: GLEW initalization error: Missing GL version
 
