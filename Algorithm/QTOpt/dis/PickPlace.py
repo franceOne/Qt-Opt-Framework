@@ -66,12 +66,13 @@ def getReward(state, reward):
     dis_grip_obj = np.linalg.norm(abs_object- grip)
     dis_obj_goal = np.linalg.norm(archieved_goal-desired_goal)
     
-    dist = -( (dis_grip_obj*10) + dis_obj_goal )
+    dist = -( (dis_grip_obj*30) + dis_obj_goal )
     print("dis grip_obj", dis_grip_obj)
     print("dis_obj_goal", dis_obj_goal)
     print("robot", grip)
-   
-    time.sleep(3)
+    print(reward+dist)
+    #time.sleep(3)
+    
     return reward + dist
 
 def getObservation(envrionment, state ):
