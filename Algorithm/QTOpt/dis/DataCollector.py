@@ -12,7 +12,10 @@ class DataCollector:
         self.agent = agent
         self.environment = environment
         self.clientWrapper = clientWrapper
-        self.path = path + "_"+str(id)
+        if path is not None:
+            self.path = path + "_"+str(id)
+        else:
+            self.path = None
         self.id = id
         self.cluster = cluster
         
@@ -111,15 +114,16 @@ class DataCollector:
     def storeData(self, state, action, image, reward, next_state, next_image, terminated):
         self.clientWrapper.storeOnlineData(state, action, image, reward, next_state, next_image, terminated)
         
-        paths = ["state.npy", "action.npy", "image.npy", "reward.npy", "next_state.npy", "next_image.npy", "terminated.npy"]
-        self.getMinSize(paths)
-        self.numpySave(self.path, "state.npy", state)
-        self.numpySave(self.path, "action.npy", action)
-        self.numpySave(self.path, "image.npy", image)
-        self.numpySave(self.path,"reward.npy", np.array([reward]))
-        self.numpySave(self.path,"next_state.npy", next_state)
-        self.numpySave(self.path,"next_image.npy", next_image)
-        self.numpySave(self.path,"terminated.npy", np.array([terminated]))
+        if self.path is not None:
+            paths = ["state.npy", "action.npy", "image.npy", "reward.npy", "next_state.npy", "next_image.npy", "terminated.npy"]
+            self.getMinSize(paths)
+            self.numpySave(self.path, "state.npy", state)
+            self.numpySave(self.path, "action.npy", action)
+            self.numpySave(self.path, "image.npy", image)
+            self.numpySave(self.path,"reward.npy", np.array([reward]))
+            self.numpySave(self.path,"next_state.npy", next_state)
+            self.numpySave(self.path,"next_image.npy", next_image)
+            self.numpySave(self.path,"terminated.npy", np.array([terminated]))
                 
 
       

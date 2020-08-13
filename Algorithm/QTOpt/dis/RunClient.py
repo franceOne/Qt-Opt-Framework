@@ -20,7 +20,8 @@ from ReplayLog import ReplayLog
 from ModelClientWrapper import ModelClient
 
 def runClient(stateSize, actionSize, camerashape, functions, getEnvironment, optimizer, loss, modelSrcWeights, dataCollectionPath, 
-dataCollerctorNumber = 1,bellmannNumber = 1, trainingsWorkerNumber = 1, replayLog =  True, loadWeights = False,  replayBufferPath = "localhost:5000", modelPath = "localhost:5001"  ):
+dataCollerctorNumber = 1,bellmannNumber = 1, trainingsWorkerNumber = 1, replayLog =  True, loadWeights = False,  
+replayBufferPath = "localhost:5000", modelPath = "localhost:5001"  ):
     #Inits
     main_lock = Lock()
     model_lock = Lock()

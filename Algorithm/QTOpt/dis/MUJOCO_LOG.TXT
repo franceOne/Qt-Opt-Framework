@@ -89,3 +89,6 @@ Mon Aug 10 21:25:33 2020
 >>>>>>> Stashed changes:Algorithm/QTOpt/dis/MUJOCO_LOG.TXT
 ERROR: GLEW initalization error: Missing GL version
 
+Thu Aug 13 16:43:29 2020
+ERROR: GLEW initalization error: Missing GL version
+

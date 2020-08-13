@@ -82,7 +82,7 @@ def returnFunctions():
 
 
 modelSrcWeights=  'saved_model/Weights/Reward/Pick_Place/FullState'
-dataCollectionPath = 'saved_model/buffer/Reward/Pick_Place/FullState/NumpyData'
+dataCollectionPath = None
 camerashape=  (500,500,3)
 loss =  "mse"
 optimizer = tf.keras.optimizers.SGD(learning_rate=0.0005, momentum=0.7, clipvalue=10)
