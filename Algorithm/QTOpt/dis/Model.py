@@ -47,7 +47,7 @@ class Model:
 
         # Initialize discount and exploration rate
         self.gamma = 0.9
-        self.epsilon = 0.3
+        self.epsilon = 0.1
         self.train_step = 0
 
         #Iint ema
