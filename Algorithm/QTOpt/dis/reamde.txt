@@ -4,3 +4,7 @@ flask run  --port=5001
 
 export FLASK_APP=Servers/ReplayBuffer/server
 flask run  --port=5000
+
+
+
+nohup my_command > my.log 2>&1 &

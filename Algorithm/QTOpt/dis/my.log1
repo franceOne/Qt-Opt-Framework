@@ -1,0 +1,612 @@
+nohup: ignoring input
+ * Serving Flask app "Servers/ReplayBuffer/server"
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+2020-08-14 16:38:15.030390: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home/franco/.mujoco/mujoco200/bin:/usr/lib/nvidia-000
+2020-08-14 16:38:15.030470: E tensorflow/stream_executor/cuda/cuda_driver.cc:313] failed call to cuInit: UNKNOWN ERROR (303)
+2020-08-14 16:38:15.030520: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (francesco): /proc/driver/nvidia/version does not exist
+2020-08-14 16:38:15.031201: I tensorflow/core/platform/cpu_feature_guard.cc:143] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2
+2020-08-14 16:38:15.066239: I tensorflow/core/platform/profile_utils/cpu_utils.cc:102] CPU Frequency: 1992000000 Hz
+2020-08-14 16:38:15.066664: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7f5ff0000b20 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-08-14 16:38:15.066721: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+127.0.0.1 - - [14/Aug/2020 16:39:29] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:30] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:30] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:30] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:30] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:30] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:30] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:31] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:31] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:31] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:31] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:31] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:31] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:31] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:32] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:32] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:32] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:32] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:32] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:32] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:32] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:32] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:33] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:33] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:33] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:33] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:33] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:33] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:34] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:34] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:34] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:34] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:34] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:34] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:35] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:35] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:35] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:35] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:35] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:35] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:36] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:36] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:36] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:36] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:36] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:36] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:37] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:37] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:37] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(1, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(2, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(3, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(4, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(5, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(6, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(7, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(8, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(9, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(10, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(11, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(12, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(13, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(14, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(15, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(16, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(17, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(18, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(19, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(20, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(21, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(22, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(23, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(24, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(25, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(26, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(27, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(28, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(29, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(30, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(31, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(32, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(33, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(34, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(35, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(36, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(37, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(38, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(39, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(40, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(41, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(42, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(43, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(44, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(45, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(46, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(47, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(48, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(49, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])127.0.0.1 - - [14/Aug/2020 16:39:37] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:37] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:37] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:38] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:38] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:38] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:38] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:38] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:39] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:39] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:39] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:39] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:39] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:39] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:40] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:40] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:40] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:40] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:40] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:40] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:40] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:40] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:41] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:41] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:41] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:41] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:41] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:42] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:42] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:42] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:42] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:42] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:42] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:42] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:43] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:43] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:43] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:43] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:43] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:43] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:43] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:44] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:44] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:44] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:44] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:44] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:44] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:44] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:45] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:45] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+
+After sored tf.Tensor(50, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(51, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(52, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(53, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(54, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(55, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(56, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(57, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(58, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(59, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(60, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(61, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(62, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(63, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(64, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(65, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(66, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(67, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(68, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(69, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(70, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(71, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(72, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(73, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(74, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(75, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(76, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(77, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(78, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(79, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(80, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(81, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(82, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(83, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(84, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(85, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(86, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(87, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(88, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(89, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(90, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(91, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(92, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(93, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(94, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(95, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(96, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(97, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(98, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(99, shape=(), dtype=int64)
+Store in online Buffer127.0.0.1 - - [14/Aug/2020 16:39:45] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:45] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:45] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:46] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:46] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:46] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:46] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:46] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:46] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:46] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:46] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:47] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:47] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:47] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:47] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:47] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:47] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:48] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:48] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:48] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:48] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:49] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:49] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:49] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:49] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:50] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:50] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:50] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:50] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:50] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:50] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:51] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:51] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:51] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:51] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:51] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:52] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:52] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:52] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:52] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:52] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:52] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:52] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:53] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:53] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:53] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:53] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:53] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:53] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+ dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(100, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(101, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(102, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(103, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(104, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(105, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(106, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(107, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(108, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(109, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(110, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(111, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(112, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(113, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(114, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(115, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(116, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(117, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(118, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(119, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(120, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(121, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(122, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(123, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(124, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(125, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(126, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(127, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(128, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(129, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(130, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(131, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(132, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(133, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(134, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(135, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(136, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(137, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(138, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(139, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(140, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(141, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(142, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(143, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(144, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(145, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(146, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(147, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(148, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])127.0.0.1 - - [14/Aug/2020 16:39:53] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:53] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:54] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:54] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:54] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:54] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:54] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:55] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:55] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:55] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:55] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:56] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:56] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:56] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:56] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:56] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:56] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:56] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:57] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:57] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:57] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:57] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:57] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:57] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:57] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:58] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:58] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:58] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:58] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:58] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:58] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:59] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:59] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:59] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:59] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:39:59] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:40:00] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:40:00] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:40:00] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:40:00] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:40:00] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:40:00] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:40:00] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:40:01] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:40:01] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:40:01] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:40:01] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:40:01] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:40:02] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+
+After sored tf.Tensor(149, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(150, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(151, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(152, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(153, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(154, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(155, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(156, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(157, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(158, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(159, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(160, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(161, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(162, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(163, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(164, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(165, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(166, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(167, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(168, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(169, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(170, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(171, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(172, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(173, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(174, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(175, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(176, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(177, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(178, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(179, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(180, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(181, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(182, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(183, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(184, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(185, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(186, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(187, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(188, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(189, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(190, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(191, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(192, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(193, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(194, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(195, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(196, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored tf.Tensor(197, shape=(), dtype=int64)
+Store in online Buffer dict_keys(['state', 'action', 'camera', 'next_camera', 'reward', 'next_state', 'terminated'])
+After sored127.0.0.1 - - [14/Aug/2020 16:40:02] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:40:02] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:40:02] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:40:02] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:40:02] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
+127.0.0.1 - - [14/Aug/2020 16:40:03] "[37mPOST /storeonlinedata HTTP/1.1[0m" 200 -
