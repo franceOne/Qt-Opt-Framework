@@ -1,9 +1,19 @@
 from ReplayBuffer import ReplayBuffer
 from flask import Flask
+import gym
 
 
-stateSize = 31
-actionSize = 4
+def createEnvironemnt(environment = "FetchReach-v1"):
+    return gym.make(environment).env
+
+enviroment = createEnvironemnt()
+config = {
+    "stateSize" : enviroment.observation_space["observation"].shape[0]+ enviroment.observation_space["achieved_goal"].shape[0] + enviroment.observation_space["desired_goal"].shape[0],    
+    "actionSize":  enviroment.action_space.shape[0]
+}
+
+stateSize = config["stateSize"]
+actionSize = config["actionSize"]
 camerashape=  (500,500,3)
 
 

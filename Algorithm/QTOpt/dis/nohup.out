@@ -1,0 +1,144 @@
+ * Serving Flask app "Servers/Model/serverModel"
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+2020-08-14 16:19:36.695148: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home/franco/.mujoco/mujoco200/bin:/usr/lib/nvidia-000
+2020-08-14 16:19:36.695231: E tensorflow/stream_executor/cuda/cuda_driver.cc:313] failed call to cuInit: UNKNOWN ERROR (303)
+2020-08-14 16:19:36.695328: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (francesco): /proc/driver/nvidia/version does not exist
+2020-08-14 16:19:36.696062: I tensorflow/core/platform/cpu_feature_guard.cc:143] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2
+2020-08-14 16:19:36.727786: I tensorflow/core/platform/profile_utils/cpu_utils.cc:102] CPU Frequency: 1992000000 Hz
+2020-08-14 16:19:36.728268: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7f3ed4000b20 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-08-14 16:19:36.728315: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+Traceback (most recent call last):
+  File "/home/franco/ALR/SimulationFramework/alrenv/bin/flask", line 8, in <module>
+    sys.exit(main())
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/flask/cli.py", line 967, in main
+    cli.main(args=sys.argv[1:], prog_name="python -m flask" if as_module else None)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/flask/cli.py", line 586, in main
+    return super(FlaskGroup, self).main(*args, **kwargs)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/click/core.py", line 782, in main
+    rv = self.invoke(ctx)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/click/core.py", line 1259, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/click/core.py", line 1066, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/click/core.py", line 610, in invoke
+    return callback(*args, **kwargs)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/click/decorators.py", line 73, in new_func
+    return ctx.invoke(f, obj, *args, **kwargs)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/click/core.py", line 610, in invoke
+    return callback(*args, **kwargs)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/flask/cli.py", line 860, in run_command
+    extra_files=extra_files,
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/werkzeug/serving.py", line 1052, in run_simple
+    inner()
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/werkzeug/serving.py", line 1005, in inner
+    fd=fd,
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/werkzeug/serving.py", line 848, in make_server
+    host, port, app, request_handler, passthrough_errors, ssl_context, fd=fd
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/werkzeug/serving.py", line 740, in __init__
+    HTTPServer.__init__(self, server_address, handler)
+  File "/usr/lib/python3.6/socketserver.py", line 456, in __init__
+    self.server_bind()
+  File "/usr/lib/python3.6/http/server.py", line 136, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/usr/lib/python3.6/socketserver.py", line 470, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+ * Serving Flask app "Servers/ReplayBuffer/server"
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+2020-08-14 16:20:15.059708: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home/franco/.mujoco/mujoco200/bin:/usr/lib/nvidia-000
+2020-08-14 16:20:15.059776: E tensorflow/stream_executor/cuda/cuda_driver.cc:313] failed call to cuInit: UNKNOWN ERROR (303)
+2020-08-14 16:20:15.059819: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (francesco): /proc/driver/nvidia/version does not exist
+2020-08-14 16:20:15.060612: I tensorflow/core/platform/cpu_feature_guard.cc:143] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2
+2020-08-14 16:20:15.096128: I tensorflow/core/platform/profile_utils/cpu_utils.cc:102] CPU Frequency: 1992000000 Hz
+2020-08-14 16:20:15.096726: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7fb7fc000b20 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-08-14 16:20:15.096777: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+Traceback (most recent call last):
+  File "/home/franco/ALR/SimulationFramework/alrenv/bin/flask", line 8, in <module>
+    sys.exit(main())
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/flask/cli.py", line 967, in main
+    cli.main(args=sys.argv[1:], prog_name="python -m flask" if as_module else None)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/flask/cli.py", line 586, in main
+    return super(FlaskGroup, self).main(*args, **kwargs)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/click/core.py", line 782, in main
+    rv = self.invoke(ctx)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/click/core.py", line 1259, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/click/core.py", line 1066, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/click/core.py", line 610, in invoke
+    return callback(*args, **kwargs)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/click/decorators.py", line 73, in new_func
+    return ctx.invoke(f, obj, *args, **kwargs)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/click/core.py", line 610, in invoke
+    return callback(*args, **kwargs)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/flask/cli.py", line 860, in run_command
+    extra_files=extra_files,
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/werkzeug/serving.py", line 1052, in run_simple
+    inner()
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/werkzeug/serving.py", line 1005, in inner
+    fd=fd,
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/werkzeug/serving.py", line 848, in make_server
+    host, port, app, request_handler, passthrough_errors, ssl_context, fd=fd
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/werkzeug/serving.py", line 740, in __init__
+    HTTPServer.__init__(self, server_address, handler)
+  File "/usr/lib/python3.6/socketserver.py", line 456, in __init__
+    self.server_bind()
+  File "/usr/lib/python3.6/http/server.py", line 136, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/usr/lib/python3.6/socketserver.py", line 470, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+ * Serving Flask app "Servers/Model/serverModel"
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+2020-08-14 16:26:22.510797: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home/franco/.mujoco/mujoco200/bin:/usr/lib/nvidia-000
+2020-08-14 16:26:22.510885: E tensorflow/stream_executor/cuda/cuda_driver.cc:313] failed call to cuInit: UNKNOWN ERROR (303)
+2020-08-14 16:26:22.510930: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (francesco): /proc/driver/nvidia/version does not exist
+2020-08-14 16:26:22.511537: I tensorflow/core/platform/cpu_feature_guard.cc:143] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2
+2020-08-14 16:26:22.539650: I tensorflow/core/platform/profile_utils/cpu_utils.cc:102] CPU Frequency: 1992000000 Hz
+2020-08-14 16:26:22.540267: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7fb24c000b20 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-08-14 16:26:22.540324: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+Traceback (most recent call last):
+  File "/home/franco/ALR/SimulationFramework/alrenv/bin/flask", line 8, in <module>
+    sys.exit(main())
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/flask/cli.py", line 967, in main
+    cli.main(args=sys.argv[1:], prog_name="python -m flask" if as_module else None)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/flask/cli.py", line 586, in main
+    return super(FlaskGroup, self).main(*args, **kwargs)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/click/core.py", line 782, in main
+    rv = self.invoke(ctx)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/click/core.py", line 1259, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/click/core.py", line 1066, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/click/core.py", line 610, in invoke
+    return callback(*args, **kwargs)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/click/decorators.py", line 73, in new_func
+    return ctx.invoke(f, obj, *args, **kwargs)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/click/core.py", line 610, in invoke
+    return callback(*args, **kwargs)
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/flask/cli.py", line 860, in run_command
+    extra_files=extra_files,
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/werkzeug/serving.py", line 1052, in run_simple
+    inner()
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/werkzeug/serving.py", line 1005, in inner
+    fd=fd,
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/werkzeug/serving.py", line 848, in make_server
+    host, port, app, request_handler, passthrough_errors, ssl_context, fd=fd
+  File "/home/franco/ALR/SimulationFramework/alrenv/lib/python3.6/site-packages/werkzeug/serving.py", line 740, in __init__
+    HTTPServer.__init__(self, server_address, handler)
+  File "/usr/lib/python3.6/socketserver.py", line 456, in __init__
+    self.server_bind()
+  File "/usr/lib/python3.6/http/server.py", line 136, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/usr/lib/python3.6/socketserver.py", line 470, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use

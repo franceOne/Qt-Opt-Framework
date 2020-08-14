@@ -5,7 +5,7 @@ import numpy as np
 import sys
 import time
 
-def createEnvironemnt(environment = "FetchPickAndPlace-v1"):
+def createEnvironemnt(environment = "FetchReach-v1"):
     return gym.make(environment).env
 
 
@@ -57,6 +57,7 @@ def getState(state):
     return array
 
 def getReward(state, reward):
+    return reward
     archieved_goal = state["achieved_goal"]
     desired_goal = state["desired_goal"]
     observation = state["observation"]
@@ -93,7 +94,7 @@ def returnFunctions():
 
 
 
-modelSrcWeights=  'saved_model/Weights/Reward/Pick_Place/FullState'
+modelSrcWeights=  'saved_model/Weights/Reward/Fetch_reach/FullState'
 dataCollectionPath = None
 camerashape=  (500,500,3)
 loss =  "mse"
