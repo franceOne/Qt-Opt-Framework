@@ -68,10 +68,10 @@ def getReward(state, reward):
     dis_grip_obj = np.linalg.norm(abs_object- grip)
     dis_obj_goal = np.linalg.norm(archieved_goal-desired_goal)
 
-    return (- np.exp(dis_obj_goal*20)) + 1
+    return (- np.exp(dis_obj_goal)) + 1
     
     
-    dist = - ( (dis_grip_obj) )
+    dist = - ( (dis_grip_obj*30) )
     print("dis grip_obj", dis_grip_obj)
     print("dis_obj_goal", dis_obj_goal)
     print("robot", grip)
