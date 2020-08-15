@@ -17,8 +17,8 @@ class ReplayBuffer:
         cameraShapeList[1] = _imgReshapeSize
         self._imgReshapeWithDepth =  cameraShape = tuple(cameraShapeList)
 
-        self.onlineBufferMaxLengh = 5000
-        self.trainBufferMaxLength = 5000
+        self.onlineBufferMaxLengh = 10000
+        self.trainBufferMaxLength = 10000
         self.offlineBuffferMaxLength = 10000
 
 
