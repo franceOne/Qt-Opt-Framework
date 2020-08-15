@@ -57,7 +57,8 @@ def getState(state):
     return array
 
 def getReward(state, reward):
-    return reward
+    #print(state)
+    #return reward
     archieved_goal = state["achieved_goal"]
     desired_goal = state["desired_goal"]
     observation = state["observation"]
@@ -66,6 +67,8 @@ def getReward(state, reward):
     rel_object = observation[6:9]
     dis_grip_obj = np.linalg.norm(abs_object- grip)
     dis_obj_goal = np.linalg.norm(archieved_goal-desired_goal)
+
+    return np.exp(-dis_obj_goal) - 1
     
     
     dist = - ( (dis_grip_obj*30) )
