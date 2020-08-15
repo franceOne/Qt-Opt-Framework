@@ -71,7 +71,7 @@ def getReward(state, reward):
     return (- np.exp(dis_obj_goal*20)) + 1
     
     
-    dist = - ( (dis_grip_obj*30) )
+    dist = - ( (dis_grip_obj) )
     print("dis grip_obj", dis_grip_obj)
     print("dis_obj_goal", dis_obj_goal)
     print("robot", grip)
