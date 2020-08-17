@@ -68,7 +68,10 @@ def getReward(state, reward):
     dis_grip_obj = np.linalg.norm(abs_object- grip)
     dis_obj_goal = np.linalg.norm(archieved_goal-desired_goal)
 
-    return (- np.exp(dis_obj_goal)) + 1
+
+    print((- np.exp(dis_obj_goal*10)) + 1)
+
+    return (- np.exp(dis_obj_goal*10)) + 1
     
     
     dist = - ( (dis_grip_obj*30) )
@@ -122,7 +125,7 @@ def run():
     runClient(config["stateSize"], config["actionSize"], camerashape, 
     returnFunctions,  createEnvironemnt, optimizer, loss, 
     modelSrcWeights, dataCollectionPath, 
-    dataCollerctorNumber, bellmannNumber, trainingsWorkerNumber, replayLog)
+    dataCollerctorNumber, bellmannNumber, trainingsWorkerNumber, replayLog, loadWeights=True)
     input("... \n")
 
 run()
