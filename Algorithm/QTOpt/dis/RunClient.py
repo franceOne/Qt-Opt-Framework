@@ -34,8 +34,6 @@ replayBufferPath = "localhost:5000", modelPath = "localhost:5001"  ):
     modelClient = ModelClient(modelPath)
 
     agent = Md(modelClient, model_lock, getEnvironment(), optimizer, loss, policyFunction, modelSrcWeights,  state_size=stateSize, action_size= actionSize, camerashape=camerashape)
-    if loadWeights:
-        agent.loadWeights()
         
     bellmannUpdater = BellmanUpdater(client, agent)
     trainingsworker = Trainingworkers(client,  agent)

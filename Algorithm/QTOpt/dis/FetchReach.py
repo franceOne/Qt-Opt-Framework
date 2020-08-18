@@ -100,7 +100,7 @@ def returnFunctions():
 
 
 
-modelSrcWeights=  'saved_model/Weights/Reward/Fetch_reach_new/FullState'
+modelSrcWeights=  'saved_model/Weights/Reward/Fetch_reach__test/FullState'
 dataCollectionPath = None
 camerashape=  (500,500,3)
 loss =  "mse"
