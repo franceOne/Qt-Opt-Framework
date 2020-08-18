@@ -56,15 +56,6 @@ class Model:
          # Build networks
         self.q_network = self._build_compile_model()
 
-        if self.url:
-          try:
-            self.q_network.load_weights(self.url)
-            self.modelClientWrapper.storeQNetwork(self.q_network.get_weights())
-            print("Load Modell from file")
-          except Exception as e:
-            print("Network coult not been loaded", e)
-       
-
 
     def saveWeightsToFile(self, model):
       if self.url:
