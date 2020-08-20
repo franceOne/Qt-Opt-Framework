@@ -7,4 +7,5 @@ flask run  --port=5000
 
 
 
+nohup ./runDBServer.sh > runDB.log 2>&1 &
 nohup my_command > my.log 2>&1 &
