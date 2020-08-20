@@ -66,7 +66,6 @@ main_lock = Lock()
 model_lock = Lock()
 
 agent = Md(modelClient, model_lock, enviroment, optimizer, loss, policyFunction, modelSrcWeights,  state_size=stateSize, action_size=actionSize, camerashape=camerashape)
-agent.loadWeights()
 replayBuffer = ReplayBuffer(state_size=stateSize, action_size=actionSize, camerashape=camerashape)
 
 bellmannUpdater = BellmanUpdater(client, agent)
