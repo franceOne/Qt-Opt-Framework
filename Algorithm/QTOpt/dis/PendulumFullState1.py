@@ -29,8 +29,8 @@ def getState(state):
 
 
 
-modelSrcWeights=  'saved_model/Weights/TEST2/FullState'
-dataCollectionPath = 'saved_model/buffer/TEST2/FullState/NumpyData'
+modelSrcWeights=  'saved_model/Weights/putty/FullState'
+dataCollectionPath = 'saved_model/buffer/putty/FullState/NumpyData'
 
 stateSize = 3
 actionSize = 1
@@ -40,8 +40,8 @@ optimizer = tf.keras.optimizers.SGD(learning_rate=0.0005, momentum=0.7, clipvalu
 
 
 dataCollerctorNumber = 1
-bellmannNumber = 1
-trainingsWorkerNumber = 1
+bellmannNumber = 2
+trainingsWorkerNumber = 2
 
 
 def getConfiguration():

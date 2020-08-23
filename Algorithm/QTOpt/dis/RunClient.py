@@ -25,7 +25,7 @@ replayBufferPath = "localhost:5000", modelPath = "localhost:5001"  ):
     #Inits
     main_lock = Lock()
     model_lock = Lock()
-    getData, getState, getObservation, getReward, policyFunction = functions()
+    _, getState, _, getReward, policyFunction = functions()
 
     print("\n DataCollectors:", dataCollerctorNumber, "\n Bellmans:", bellmannNumber, "\n Trainingsworkers:", trainingsWorkerNumber, "\n replayLog", replayLog)
     
