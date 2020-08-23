@@ -17,6 +17,10 @@ config = {
 
 stateSize = config["stateSize"]
 actionSize = config["actionSize"]
+
+stateSize = 3
+actionSize = 1
+
 camerashape=  (500,500,3)
 loss =  "mse"
 optimizer = tf.keras.optimizers.SGD(learning_rate=0.0005, momentum=0.7, clipvalue=10)
