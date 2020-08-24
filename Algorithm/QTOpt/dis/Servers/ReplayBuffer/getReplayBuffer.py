@@ -15,8 +15,7 @@ config = {
 stateSize = config["stateSize"]
 actionSize = config["actionSize"]
 
-stateSize = 3
-actionSize = 1
+
 camerashape=  (500,500,3)
 
 
