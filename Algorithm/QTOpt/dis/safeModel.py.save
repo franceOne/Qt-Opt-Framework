@@ -1,6 +1,6 @@
 from getModel import getAgent
 
-path_to_save = "test/reach"
+path_to_save = "t/save_model"
 
 agent = getAgent(path_to_save)
 agent.getQNetwork()
