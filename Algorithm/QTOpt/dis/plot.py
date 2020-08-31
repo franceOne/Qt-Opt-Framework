@@ -2,9 +2,9 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 
-name = 'Reward/Fetch_reach__test/FullState_0'
+name = 'fetch_reach/1000epochs/'
 dataCollectionPath = 'saved_model/data/'+name
-file_name = dataCollectionPath+ "/rewardsPerEpoch.npy"
+file_name = dataCollectionPath+ "/loss.npy"
 
 
 def loadNumpy(path):
@@ -15,6 +15,7 @@ def loadNumpy(path):
     return loaded_file
 
 data_to_plot = loadNumpy(file_name)
+print(data_to_plot)
 
 
 if data_to_plot is not None:

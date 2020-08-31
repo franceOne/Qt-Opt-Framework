@@ -1,14 +1,17 @@
 import numpy as np
 import tensorflow as tf
 import time
+import os
 
 class Trainingworkers:
-    def __init__(self, clientWrapper,  agent):
+    def __init__(self, clientWrapper,  agent, lock, path):
         self.clientWrapper = clientWrapper
         self.agent = agent
 
         self.batch_size = 64
         self.step = 0
+        self.path = path
+        self.lock = lock
    
 
     def start(self):
@@ -38,6 +41,41 @@ class Trainingworkers:
         grads = np.asarray(grads)
         return grads
 
+    def loadNumpy(self, path):
+        if not(os.path.exists(path)):
+            print("Path does not exist", path)
+            return None 
+        loaded_file = np.load(path)
+        return loaded_file
+
+
+    def saveLoss(self, data, output_filename="loss.npy"):
+        path = self.path
+
+        if path is None:
+            return
+        homedir = os.path.expanduser("~")
+        # construct the directory string
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        pathset = os.path.join(dir_path, path)
+        # check the directory does not exist
+       
+        if not(os.path.exists(pathset)):
+            # create the directory you want to save to
+            os.makedirs(pathset)
+            ds = {"ORE_MAX_GIORNATA": 5}
+            # write the file in the new directory
+        path_to_store = os.path.join(pathset, output_filename)
+        oldData = self.loadNumpy(path_to_store)
+        #print("data", data.shape, oldData, data)
+
+        newData = [data]
+        if oldData is not None:
+            newData = np.concatenate((oldData, [data]), axis= 0)
+            #print(output_filename, "olddata", oldData.shape, "data", data.shape, oldData, data)
+            #print("newData", newData)
+        np.save(path_to_store, newData)
+
     def train(self , npCameras, npStates, npActions , q_target):
     
         self.step +=1
@@ -59,6 +97,11 @@ class Trainingworkers:
                 
 
         print( "LOSS", loss_value.numpy().mean() )
+        loss_mean = loss_value.numpy().mean()
+
+        with self.lock:
+                self.saveLoss(loss_mean)
+
         grads = tape.gradient(loss_value, qnetwork.trainable_variables, unconnected_gradients='zero')
         old_gras = self.parseGrad(grads)
 
