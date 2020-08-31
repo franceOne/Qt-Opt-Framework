@@ -69,7 +69,7 @@ def getReward(state, reward):
     dis_obj_goal = np.linalg.norm(archieved_goal-desired_goal)
 
 
-    print((- np.exp(dis_obj_goal*10)) + 1)
+    #print((- np.exp(dis_obj_goal*10)) + 1)
 
     return (- np.exp(dis_obj_goal*10)) + 1
     
@@ -99,9 +99,10 @@ def returnFunctions():
     return getData, getState, getObservation, getReward, policyFunction
 
 
+name = 'fetch_reach/1000epochs'
 
-modelSrcWeights=  'saved_model/Weights/Reward/Fetch_reach__test/FullState'
-dataCollectionPath = None
+modelSrcWeights=  'saved_model/Weights/'+name
+dataCollectionPath = 'saved_model/data/'+name
 camerashape=  (500,500,3)
 loss =  "mse"
 optimizer = tf.keras.optimizers.SGD(learning_rate=0.0005, momentum=0.7, clipvalue=10)

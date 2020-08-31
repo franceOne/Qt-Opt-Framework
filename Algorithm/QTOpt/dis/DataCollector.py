@@ -8,7 +8,7 @@ from mujoco_py import GlfwContext
 
 
 class DataCollector:
-    def __init__(self, id, clientWrapper, agent, environment, action_space_policy, state_policy, reward_policy, path = "/data", cluster = True):
+    def __init__(self, id, clientWrapper, agent, environment, action_space_policy, state_policy, reward_policy, path = "/data", cluster = False):
         self.agent = agent
         self.environment = environment
         self.clientWrapper = clientWrapper
@@ -23,7 +23,7 @@ class DataCollector:
         #Init variables
                
         self.policyFunction = action_space_policy
-        self.max_step_size = 100
+        self.max_step_size = 1000
         self.get_state = state_policy
         self.reward_policy = reward_policy
     
@@ -68,6 +68,39 @@ class DataCollector:
         pathset = os.path.join(dir_path, path)
         path_to_store = os.path.join(pathset, output_filename)
         return path_to_store
+
+
+
+    def safeRewards(self,path, data, output_filename="rewardsPerEpoch.npy"):
+
+        if path is None:
+            return
+        homedir = os.path.expanduser("~")
+        # construct the directory string
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        pathset = os.path.join(dir_path, path)
+        # check the directory does not exist
+       
+        if not(os.path.exists(pathset)):
+            # create the directory you want to save to
+            os.makedirs(pathset)
+            ds = {"ORE_MAX_GIORNATA": 5}
+            # write the file in the new directory
+        path_to_store = os.path.join(pathset, output_filename)
+        oldData = self.loadNumpy(path_to_store)
+        #print("data", data.shape, oldData, data)
+
+        newData = [data]
+        if oldData is not None:
+            newData = np.concatenate((oldData, [data]), axis= 0)
+            #print(output_filename, "olddata", oldData.shape, "data", data.shape, oldData, data)
+            #print("newData", newData)
+        np.save(path_to_store, newData)
+
+    
+
+
+    
 
 
 
@@ -195,6 +228,7 @@ class DataCollector:
                     bar.finish()
                     print("**********************************")
                     print("Episode {} Reward {}".format(self.episode, rewardSum))
+                    self.safeRewards(self.path,rewardSum)
                     print("**********************************")
                     break
 
