@@ -6,6 +6,8 @@ name = 'fetch_reach/1000epochs/'
 dataCollectionPath = 'saved_model/data/'+name
 file_name = dataCollectionPath+ "/loss.npy"
 
+file_name = "saved_model/data/fetch_reach/1000epochs_0/rewardsPerEpoch.npy"
+
 
 def loadNumpy(path):
     if not(os.path.exists(path)):
@@ -16,6 +18,8 @@ def loadNumpy(path):
 
 data_to_plot = loadNumpy(file_name)
 print(data_to_plot)
+
+x = [i for i in range(data_to_plot.shape[0])]
 
 
 if data_to_plot is not None:

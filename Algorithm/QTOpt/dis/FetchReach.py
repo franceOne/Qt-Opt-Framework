@@ -71,7 +71,7 @@ def getReward(state, reward):
 
     #print((- np.exp(dis_obj_goal*10)) + 1)
 
-    return (- np.exp(dis_obj_goal*10)) + 1
+    return ( np.exp(-dis_obj_goal))
     
     
     dist = - ( (dis_grip_obj*30) )
