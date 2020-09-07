@@ -1,0 +1,20 @@
+MuJoCo Pro Personal license activation key, number 74251, type 6.
+
+Issued to Rahul Kumar <rk105290@student.sgh.waw.pl>.
+
+Expires September 7, 2021.
+
+This file activates MuJoCo Pro on a single computer with id:
+LINUX_s8D19S142_SG2DW850B3k8a2i659S2Nn510345
+
+Do not modify this file. Its entire content, including the
+plain text section, is used by the activation manager.
+
+1af554f021cd5f3f28be040aa363464d005f8ce005d593633f56daf8987d5248
+022311843e3ce0edf6e548d78f448056d2808aa1948e69e8206a6e6b7c9bb447
+2c5973efacf4bd477ffee6b6f2591713107691a40322d3897098378742eaa7ed
+1b4dc00d0ace282904c4301463c0123396b5658488e848134710ffeeea3f7862
+742b6d67f0ddb8b6388df99b2b9bcf528442b423fe3e77f96bf1e3b7b1f221aa
+853d523235bcb375e7bf71f8bb8e1036ee4936b94c66f7aaec129b8f9a31752e
+6cca74a28f4a0afdc12eeca156250f20378e5743856993f6022e254dcbff7655
+101a7096e0121713ed5bcddf818ed3517235e0d1202b0fc80c31d5d5991a55d9
