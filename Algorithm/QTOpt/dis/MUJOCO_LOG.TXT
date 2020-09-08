@@ -155,3 +155,6 @@ ERROR: Expired activation key
 Sun Sep  6 13:52:46 2020
 ERROR: Expired activation key
 
+Mon Sep  7 23:26:28 2020
+ERROR: Invalid length of entrypted section
+
