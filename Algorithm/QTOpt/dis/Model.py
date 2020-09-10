@@ -208,7 +208,7 @@ class Model:
 
 
     def setState(self, state):
-        print(state)
+        #print(state)
         return np.array([0,0,0,0,0,0,0,0,0,0,0,0, 0, state[13], state[14], state[15]])
         #return state
 
