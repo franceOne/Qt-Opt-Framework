@@ -61,7 +61,7 @@ def getState(state):
 def getReward(state, reward):
     #print(state)
     #return reward
-    print(state)
+    #print(state)
     archieved_goal = state["achieved_goal"]
     desired_goal = state["desired_goal"]
     observation = state["observation"]
