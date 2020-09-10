@@ -8,7 +8,7 @@ from mujoco_py import GlfwContext
 
 
 class DataCollector:
-    def __init__(self, id, clientWrapper, agent, environment, action_space_policy, state_policy, reward_policy, path = "/data", cluster = True):
+    def __init__(self, id, clientWrapper, agent, environment, action_space_policy, state_policy, reward_policy, path = "/data", cluster = False):
         self.agent = agent
         self.environment = environment
         self.clientWrapper = clientWrapper
@@ -159,7 +159,7 @@ class DataCollector:
             self.numpySave(self.path,"terminated.npy", np.array([terminated]))
                 
 
-      
+ 
 
     def collectData(self, train, lock):
         enviroment = self.environment

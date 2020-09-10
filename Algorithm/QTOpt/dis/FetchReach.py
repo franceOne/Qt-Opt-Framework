@@ -40,6 +40,7 @@ print('Action Shape:', enviroment.action_space.shape)
 print(enviroment.observation_space["observation"].shape[0]+ enviroment.observation_space["achieved_goal"].shape[0] + enviroment.observation_space["desired_goal"].shape[0] )
 
 config = {
+    #"stateSize" : 3,
     "stateSize" : enviroment.observation_space["observation"].shape[0]+ enviroment.observation_space["achieved_goal"].shape[0] + enviroment.observation_space["desired_goal"].shape[0],    
     "actionSize":  enviroment.action_space.shape[0]
 }
@@ -52,6 +53,7 @@ def policyFunction(action):
 
 
 def getState(state):
+    #return state["desired_goal"]
     #print("Observation", state["observation"], "archieved", state["achieved_goal"], "des", state["desired_goal"])
     array =  np.concatenate([state["observation"],state["achieved_goal"], state["desired_goal"]],  axis=None)
     return array
@@ -59,6 +61,7 @@ def getState(state):
 def getReward(state, reward):
     #print(state)
     #return reward
+    print(state)
     archieved_goal = state["achieved_goal"]
     desired_goal = state["desired_goal"]
     observation = state["observation"]
@@ -94,9 +97,13 @@ def getData(environment, action):
     return getObservation(envrionment, next_state), getState(next_state), reward, terminated
 
 
+def get_cem_action_size():
+    return 3
+
+
 
 def returnFunctions():
-    return getData, getState, getObservation, getReward, policyFunction
+    return getData, getState, getObservation, getReward, policyFunction, get_cem_action_size
 
 
 name = 'fetch_reach/1000epochs'

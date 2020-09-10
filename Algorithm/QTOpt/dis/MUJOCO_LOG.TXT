@@ -158,3 +158,6 @@ ERROR: Expired activation key
 Mon Sep  7 23:26:28 2020
 ERROR: Invalid length of entrypted section
 
+Thu Sep 10 15:58:30 2020
+ERROR: GLEW initalization error: Missing GL version
+

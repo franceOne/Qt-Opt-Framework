@@ -1,0 +1,18 @@
+nohup: ignoring input
+ * Serving Flask app "Servers/Model/serverModel"
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+2020-09-10 17:52:00.405343: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home/franco/.mujoco/mujoco200/bin:/usr/lib/nvidia-000
+2020-09-10 17:52:00.405507: E tensorflow/stream_executor/cuda/cuda_driver.cc:313] failed call to cuInit: UNKNOWN ERROR (303)
+2020-09-10 17:52:00.405568: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (francesco): /proc/driver/nvidia/version does not exist
+2020-09-10 17:52:00.405899: I tensorflow/core/platform/cpu_feature_guard.cc:143] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2
+2020-09-10 17:52:00.422631: I tensorflow/core/platform/profile_utils/cpu_utils.cc:102] CPU Frequency: 1992000000 Hz
+2020-09-10 17:52:00.423005: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7f9220000b20 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-09-10 17:52:00.423055: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+ * Running on http://127.0.0.1:5001/ (Press CTRL+C to quit)
+127.0.0.1 - - [10/Sep/2020 17:52:07] "[37mGET /gettargetnetworks HTTP/1.1[0m" 200 -
+127.0.0.1 - - [10/Sep/2020 17:53:07] "[37mGET /gettargetnetworks HTTP/1.1[0m" 200 -
+127.0.0.1 - - [10/Sep/2020 17:54:35] "[37mGET /gettargetnetworks HTTP/1.1[0m" 200 -
+127.0.0.1 - - [10/Sep/2020 17:55:28] "[37mGET /gettargetnetworks HTTP/1.1[0m" 200 -

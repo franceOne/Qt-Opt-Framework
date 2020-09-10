@@ -15,7 +15,7 @@ import tensorflow.keras.backend as kb
 
 
 class Model:
-    def __init__(self, modelClientWrapper, lock, enviroment, optimizer, loss,  action_space_policy, storedUrl = None ,  state_size= 4, action_size= 1, camerashape = (500,500,3),  cem_update_itr = 2, select_num = 6, num_samples = 64):
+    def __init__(self, modelClientWrapper, lock, enviroment, optimizer, loss,  action_space_policy, cem_action_size, storedUrl = None ,  state_size= 4, action_size= 1, camerashape = (500,500,3),  cem_update_itr = 2, select_num = 6, num_samples = 64):
         #Model Properties
         self._state_size = state_size
         self._action_size = action_size
@@ -131,9 +131,8 @@ class Model:
       input("W")
       return -custom_loss
 
-
     def _buildCameraModel(self):
-      imgInput =   keras.Input(shape=(self._imgReshapeWithDepth), name='img_input')
+      imgInput =  keras.Input(shape=(self._imgReshapeWithDepth), name='img_input')
       x = layers.BatchNormalization()(imgInput)
       x = layers.Conv2D(16, (3,3),activation="relu", name="input_Conv")(x)
       x = layers.BatchNormalization()(x)
@@ -208,9 +207,14 @@ class Model:
           print("MODEL: ERROR FETCHING QNETWORK 2")
 
 
+    def setState(self, state):
+        print(state)
+        return np.array([0,0,0,0,0,0,0,0,0,0,0,0, 0, state[13], state[14], state[15]])
+        #return state
+
     def _get_cem_optimal_Action(self,state, camera, training, networkToUse = None):
       #print("CEM state", state)
-
+      state = self.setState(state)
       #(32, BATCH ,4)
       states = np.tile(state, (self.cem_num_samples,1))
       #(32, BATCH,64,64,64,3)

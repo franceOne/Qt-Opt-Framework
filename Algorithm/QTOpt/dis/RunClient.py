@@ -26,7 +26,7 @@ replayBufferPath = "localhost:5000", modelPath = "localhost:5001"  ):
     main_lock = Lock()
     model_lock = Lock()
     loss_lock = Lock()
-    _, getState, _, getReward, policyFunction = functions()
+    _, getState, _, getReward, policyFunction, get_cem_action_size = functions()
 
     print("\n DataCollectors:", dataCollerctorNumber, "\n Bellmans:", bellmannNumber, "\n Trainingsworkers:", trainingsWorkerNumber, "\n replayLog", replayLog)
     
@@ -34,7 +34,7 @@ replayBufferPath = "localhost:5000", modelPath = "localhost:5001"  ):
     client = Client(replayBufferPath)
     modelClient = ModelClient(modelPath)
 
-    agent = Md(modelClient, model_lock, getEnvironment(), optimizer, loss, policyFunction, modelSrcWeights,  state_size=stateSize, action_size= actionSize, camerashape=camerashape)
+    agent = Md(modelClient, model_lock, getEnvironment(), optimizer, loss, policyFunction, get_cem_action_size(), modelSrcWeights,  state_size=stateSize, action_size= actionSize, camerashape=camerashape)
         
     bellmannUpdater = BellmanUpdater(client, agent)
     trainingsworker = Trainingworkers(client,  agent, loss_lock, dataCollectionPath)
