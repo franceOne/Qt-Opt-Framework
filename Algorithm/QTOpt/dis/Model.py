@@ -209,8 +209,8 @@ class Model:
 
     def setState(self, state):
         #print(state)
-        return np.array([0,0,0,0,0,0,0,0,0,0,0,0, 0, state[13], state[14], state[15]])
-        #return state
+        #return np.array([0,0,0,0,0,0,0,0,0,0,0,0, 0, state[13], state[14], state[15]])
+        return state
 
     def _get_cem_optimal_Action(self,state, camera, training, networkToUse = None):
       #print("CEM state", state)

@@ -59,8 +59,12 @@ def getObservation(envrionment, state ):
 def getData(environment, action):
     return None
 
+def get_cem_action_size():
+    return 3
+
+
 def returnFunctions():
-    return getData, getState, getObservation, getReward, policyFunction
+    return getData, getState, getObservation, getReward, policyFunction, get_cem_action_size 
 
 
 
