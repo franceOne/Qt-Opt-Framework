@@ -3,13 +3,18 @@ from flask import Flask
 import gym
 
 
-def createEnvironemnt(environment = "FetchReach-v1"):
+def createEnvironemnt(environment = "Pendulum-v0"):
     return gym.make(environment).env
 
 enviroment = createEnvironemnt()
 config = {
     "stateSize" : enviroment.observation_space["observation"].shape[0]+ enviroment.observation_space["achieved_goal"].shape[0] + enviroment.observation_space["desired_goal"].shape[0],    
     "actionSize":  enviroment.action_space.shape[0]
+}
+
+config = {
+    "stateSize" : 3,    
+    "actionSize":  1
 }
 
 stateSize = config["stateSize"]
