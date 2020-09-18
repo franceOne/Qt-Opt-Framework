@@ -66,10 +66,10 @@ def get_cem_action_size():
 def returnFunctions():
     return getData, getState, getObservation, getReward, policyFunction, get_cem_action_size 
 
+name = 'pendulum/1000epochs'
 
-
-modelSrcWeights=  'saved_model/Weights/puttyy/pendulum/FullState'
-dataCollectionPath = None
+modelSrcWeights=  'saved_model/Weights/'+name
+dataCollectionPath = 'saved_model/data/'+name
 camerashape=  (500,500,3)
 loss =  "mse"
 optimizer = tf.keras.optimizers.SGD(learning_rate=0.0005, momentum=0.7, clipvalue=10)
