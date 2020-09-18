@@ -23,7 +23,7 @@ class DataCollector:
         #Init variables
                
         self.policyFunction = action_space_policy
-        self.max_step_size = 1000
+        self.max_step_size = 100
         self.get_state = state_policy
         self.reward_policy = reward_policy
     
