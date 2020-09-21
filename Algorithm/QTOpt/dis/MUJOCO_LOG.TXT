@@ -161,3 +161,6 @@ ERROR: Invalid length of entrypted section
 Thu Sep 10 15:58:30 2020
 ERROR: GLEW initalization error: Missing GL version
 
+Mon Sep 21 21:38:36 2020
+ERROR: GLEW initalization error: Missing GL version
+

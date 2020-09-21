@@ -37,7 +37,7 @@ print('Number of actions: {} '.format(enviroment.action_space, enviroment.action
 print('States Shape:', enviroment.observation_space.shape)
 print('Action Shape:', enviroment.action_space.shape)
 
-print(enviroment.observation_space["observation"].shape[0]+ enviroment.observation_space["achieved_goal"].shape[0] + enviroment.observation_space["desired_goal"].shape[0] )
+print("Observation"+  str(enviroment.observation_space["observation"].shape[0])+  " \n Archieved Goal "+ str(enviroment.observation_space["achieved_goal"].shape[0]) + "\n Desired Goal " + str(enviroment.observation_space["desired_goal"].shape[0]) )
 
 config = {
     #"stateSize" : 3,

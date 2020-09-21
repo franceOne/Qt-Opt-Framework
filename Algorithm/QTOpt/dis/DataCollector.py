@@ -160,6 +160,11 @@ class DataCollector:
                 
 
  
+    def getActionByStates(self,state):
+        archieved_goal = state[10:13]
+        goal = state[13:]
+        movement = goal - archieved_goal
+        return np.array([movement[0]*10,movement[1]*10,movement[2]*10, 10])
 
     def collectData(self, train, lock):
         enviroment = self.environment
@@ -201,8 +206,14 @@ class DataCollector:
                 action = self.agent.get_Action(enviroment, state, self.agent.getReshapedImg(concatenatedImage), train, self.getTarget1Network())
                 action = self.policyFunction(action)
 
-                # Take action    
-                next_state, reward, terminated, info = enviroment.step(action)
+                # Take action 
+                if i < 1000:   
+                    next_state, reward, terminated, info = enviroment.step(self.getActionByStates(state))
+                else:
+                    next_state, reward, terminated, info = enviroment.step(action)
+                
+                isTerminated = not bool(-reward)
+               
                 reward = self.reward_policy(next_state,reward)
                 #print("Reward", reward)
                 next_state = self.get_state(next_state)
@@ -223,8 +234,11 @@ class DataCollector:
                 lastImage = camera
                 camera = next_camera
                 bar.update(step)
+                
 
-                if terminated or step >= self.max_step_size:
+              
+
+                if isTerminated or terminated or step >= self.max_step_size:
                     bar.finish()
                     print("**********************************")
                     print("Episode {} Reward {}".format(self.episode, rewardSum))

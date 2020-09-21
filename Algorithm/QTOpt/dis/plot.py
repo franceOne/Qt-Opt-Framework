@@ -2,11 +2,11 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 
-name = 'fetch_reach/1000epochs/'
+name = 'pendulum/1000epochs/'
 dataCollectionPath = 'saved_model/data/'+name
 file_name = dataCollectionPath+ "/loss.npy"
 
-file_name = "saved_model/data/fetch_reach/1000epochs_0/rewardsPerEpoch.npy"
+#file_name = "saved_model/data/pendulum/1000epochs_0/rewardsPerEpoch.npy"
 
 
 def loadNumpy(path):
