@@ -23,7 +23,7 @@ class DataCollector:
         #Init variables
                
         self.policyFunction = action_space_policy
-        self.max_step_size = 100
+        self.max_step_size = 1000
         self.get_state = state_policy
         self.reward_policy = reward_policy
     
@@ -207,7 +207,7 @@ class DataCollector:
                 action = self.policyFunction(action)
 
                 # Take action 
-                if i < 1000:   
+                if i < 10:   
                     next_state, reward, terminated, info = enviroment.step(self.getActionByStates(state))
                 else:
                     next_state, reward, terminated, info = enviroment.step(action)
@@ -215,7 +215,9 @@ class DataCollector:
                 isTerminated = not bool(-reward)
                
                 reward = self.reward_policy(next_state,reward)
-                #print("Reward", reward)
+                if isTerminated:
+                    #print("Reward", type(reward))
+                    reward = np.float64(3.0)
                 next_state = self.get_state(next_state)
 
                 with lock:
