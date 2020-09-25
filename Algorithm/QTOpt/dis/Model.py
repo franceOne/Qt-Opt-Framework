@@ -212,6 +212,13 @@ class Model:
         #return np.array([0,0,0,0,0,0,0,0,0,0,0,0, 0, state[13], state[14], state[15]])
         return state
 
+    def getActionByStates(self,state):
+        archieved_goal = state[10:13]
+        goal = state[13:]
+        return np.array([0,0,0,0,0,0,0,0,0,0,archieved_goal[0],archieved_goal[1], archieved_goal[2], goal[0], goal[1], goal[2]])
+        #movement = goal - archieved_goal
+        #return np.array([movement[0]*10,movement[1]*10,movement[2]*10, 10])
+
     def _get_cem_optimal_Action(self,state, camera, training, networkToUse = None):
       #print("CEM state", state)
       state = self.setState(state)
