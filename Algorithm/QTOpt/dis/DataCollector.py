@@ -207,8 +207,11 @@ class DataCollector:
                 action = self.policyFunction(action)
 
                 # Take action 
-                if i < 10:   
-                    next_state, reward, terminated, info = enviroment.step(self.getActionByStates(state))
+                if i < 100:
+                    if (np.random.rand() <= 0.8):
+                        next_state, reward, terminated, info =  enviroment.step(enviroment.action_space.sample())
+                    else:
+                        next_state, reward, terminated, info = enviroment.step(self.getActionByStates(state))
                 else:
                     next_state, reward, terminated, info = enviroment.step(action)
                 
