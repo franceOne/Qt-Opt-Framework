@@ -86,5 +86,5 @@ model_lock = Lock()
 
 def getAgent(path, modelPath="localhost:5001"):
     modelClient = ModelClient(modelPath)
-    agent = Md(modelClient, model_lock, createEnvironemnt(), optimizer, loss, policyFunction, storedUrl=path, state_size=config["stateSize"], action_size= config["actionSize"], camerashape=camerashape)
-    return agent 
+    agent = Md(modelClient, model_lock, createEnvironemnt(), optimizer, loss, policyFunction, None, storedUrl=path, state_size=config["stateSize"], action_size= config["actionSize"], camerashape=camerashape)
+    return agent

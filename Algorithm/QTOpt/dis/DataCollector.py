@@ -8,7 +8,7 @@ from mujoco_py import GlfwContext
 
 
 class DataCollector:
-    def __init__(self, id, clientWrapper, agent, environment, action_space_policy, state_policy, reward_policy, path = "/data", cluster = True):
+    def __init__(self, id, clientWrapper, agent, environment, action_space_policy, state_policy, reward_policy, path = "/data", cluster = False):
         self.agent = agent
         self.environment = environment
         self.clientWrapper = clientWrapper
@@ -208,7 +208,7 @@ class DataCollector:
 
                 # Take action 
                 if i < 10000:
-                    if (np.random.rand() <= 0.8):
+                    if (np.random.rand() <= 0.4):
                         next_state, reward, terminated, info =  enviroment.step(enviroment.action_space.sample())
                     else:
                         next_state, reward, terminated, info = enviroment.step(self.getActionByStates(state))
